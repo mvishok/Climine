@@ -1,5 +1,0 @@
-let a = num(input("NUm: "));
-if (a == 1) {
-    display("true");
-    display("not flase");
-};
