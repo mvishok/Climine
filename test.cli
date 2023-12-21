@@ -1,0 +1,4 @@
+let l = num(input("Length:"));
+let b = num(input("Breadth:"));
+let a = (l * b);
+display("Area = " & a & " cm2");
