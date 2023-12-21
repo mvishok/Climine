@@ -1,6 +1,11 @@
 
 function parser(tokens){
     let current = 0;
+    
+    if (tokens.Length < 1){
+        console.log("No tokens to parse");
+        exit(1);
+    }
 
     function walk(){
         let token = tokens[current];
@@ -76,6 +81,26 @@ function parser(tokens){
 
             return node;
         }
+
+        //if it is a functional block "{}" , similarly store statements to "statements"
+        if(token.type === 'delimiter' && token.value === '{'){
+            let node = {
+                type: 'BlockStatement',
+                statements: [],
+            };
+
+            token = tokens[++current];
+
+            while((token.type !== 'delimiter') || (token.type === 'delimiter' && token.value !== '}')){
+                node.statements.push(walk());
+                token = tokens[current];
+            }
+
+            current++;
+
+            return node;
+        }
+
 
         if(token.type == 'delimiter' && token.value === ';'){
             current++;

@@ -1,4 +1,5 @@
-let l = num(input("Length:"));
-let b = num(input("Breadth:"));
-let a = (l * b);
-display("Area = " & a & " cm2");
+let a = num(input("NUm: "));
+if (a == 1) {
+    display("true");
+    display("not flase");
+};

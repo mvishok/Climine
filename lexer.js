@@ -1,11 +1,16 @@
+const { exit } = require('process');
 function lexer(input){
-    const keywords = ['if', 'endif'];
+    const keywords = ['if', 'else'];
     const operators = ['+', '-', '*', '/', '**', '=', '>', '<', '==', '!=', '<=', '>=', '&&', '||', '!', '&'];
     const delimiters = ['(', ')', '{', '}', ';', ','];
 
     let tokens = [];
     let current = 0;
 
+    if (!input) {
+        exit(0);
+    }
+    
     while(current < input.length){
         let char = input[current];
 
@@ -98,7 +103,7 @@ function lexer(input){
         }
 
         console.log('Unexpected character: ' + char);
-        return undefined;
+        exit(1);
     }
 
     return tokens;

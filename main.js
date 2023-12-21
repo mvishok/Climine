@@ -1,6 +1,7 @@
 const lexer = require("./lexer");
 const parser = require("./parser");
-const { def } = require("./core");
+const { def} = require("./core");
+const eval = require("./eval");
 const fs = require("fs");
 
 const { exit } = require("process");
@@ -16,7 +17,7 @@ if (process.argv.length > 2) {
         console.error(`Error reading the file: ${error.message}`);
         exit(1);
     }
-    main(fileContent);
+    start(fileContent);
 } else {
     const prompt = require("prompt-sync")();
     console.log("Welcome to Climine v0.1.0.\nType 'exit' to exit.");
@@ -26,14 +27,18 @@ if (process.argv.length > 2) {
         if(input === 'exit'){
             exit(0);
         }
-        main(input);
+        start(input);
     }
     
 }
 
-function main(input) {
+function start(input) {
     const tokens = lexer(input);
     const ast = parser(tokens);
+    main(ast);
+}
+
+function main(ast) {
 
     let current = [];
 
@@ -46,8 +51,8 @@ function main(input) {
             current = [];
         }
     });
+    
     mainFlow: for (let statement of finalAST) {
-        
         for (const [index, token] of statement["statement"].entries()){
             if (token.type == "Identifier") {
                 if (statement["statement"][index+1].type == "CallExpression"){
@@ -67,6 +72,15 @@ function main(input) {
                     exit(1);
                 }
                 
+            }
+            if (token.type == "Keyword"){
+                if (token.value=="if"){
+                    var condition = statement["statement"][1].params;
+                    var body = statement["statement"][2].statements;
+                    if (eval(condition, def) == 1){    
+                        main({body: body});
+                    }    
+                }
             }
             
         }

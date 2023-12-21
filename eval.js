@@ -2,6 +2,9 @@ const { exit } = require('process');
 const { getVariable } = require('./mem');
 
 function eval(node, def) {
+    if (node.length == 0) {
+        return "";
+    }
     var variableValue;
     if (node.length === 1 && node[0].type === 'Identifier') {
         if (getVariable(node[0].value)[0]) {
@@ -30,7 +33,7 @@ function eval(node, def) {
     }
     else if (node[0].type === 'Identifier') {
 
-        if (node[1].type === 'CallExpression') {
+        if (node[1]&&node[1].type === 'CallExpression') {
             if (def[node[0].value]) {
                 variableValue = def[node[0].value](node[1].params);
                 if (variableValue === undefined) {
@@ -121,6 +124,9 @@ function eval(node, def) {
                 break;
             case '&':
                 result = result.toString() + operand.toString();
+                break;
+            case '==':
+                result = result == operand ? 1 : 0;
                 break;
             case undefined:
                 break;
