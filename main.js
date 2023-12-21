@@ -77,9 +77,18 @@ function main(ast) {
                 if (token.value=="if"){
                     var condition = statement["statement"][1].params;
                     var body = statement["statement"][2].statements;
+
+                    if (statement["statement"][3].type == "Keyword" && statement["statement"][3].value == "else"){
+                        var elseBody = statement["statement"][4].statements;
+                    }
+
                     if (eval(condition, def) == 1){    
                         main({body: body});
-                    }    
+                    } else {
+                        if (elseBody){
+                            main({body: elseBody});
+                        }
+                    }
                 }
             }
             
