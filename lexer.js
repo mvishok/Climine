@@ -1,6 +1,6 @@
 const { exit } = require('process');
 function lexer(input){
-    const keywords = ['if', 'else'];
+    const keywords = ['if', 'else', 'let', ,'until', 'while', 'for'];
     const operators = ['+', '-', '*', '/', '**', '=', '>', '<', '==', '!=', '<=', '>=', '&&', '||', '!', '&'];
     const delimiters = ['(', ')', '{', '}', ';', ','];
 

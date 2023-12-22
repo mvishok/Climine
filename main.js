@@ -5,6 +5,7 @@ const eval = require("./eval");
 const fs = require("fs");
 
 const { exit } = require("process");
+const { getVariable } = require("./mem");
 
 
 //if filename is given in args, read the file and store it in fileContent
@@ -63,10 +64,6 @@ function main(ast) {
                         exit(1);
                     }
                 }
-                else if (token.value == "let"){
-                    def['set'](statement["statement"]);
-                    continue mainFlow;
-                }
                 else {
                     console.log(`${token.value} is not defined (ast)`);
                     exit(1);
@@ -89,8 +86,39 @@ function main(ast) {
                             main({body: elseBody});
                         }
                     }
+                } else if (token.value == "until"){
+                    var condition = statement["statement"][1].params;
+                    var body = statement["statement"][2].statements;
+
+                    if (statement["statement"][3].type == "Keyword" && statement["statement"][3].value == "else"){
+                        var elseBody = statement["statement"][4].statements;
+                    }
+                    while (eval(condition, def) != 1){
+                        main({body: body});
+                    }
+                    if (elseBody){
+                        main({body: elseBody});
+                    }
+
+                } else if (token.value == "while"){
+                    var condition = statement["statement"][1].params;
+                    var body = statement["statement"][2].statements;
+
+                    if (statement["statement"][3].type == "Keyword" && statement["statement"][3].value == "else"){
+                        var elseBody = statement["statement"][4].statements;
+                    }
+                    while (eval(condition, def) == 1){
+                        
+                        main({body: body});
+                    }
+                    if (elseBody){
+                        main({body: elseBody});
+                    }
+                } else if (token.value == "let"){
+                    def['set'](statement["statement"]);
+                    continue mainFlow;
                 }
-            }
+            } 
             
         }
     }
