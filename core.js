@@ -2,7 +2,12 @@ const eval = require("./eval");
 const {setVariable, getVariable, dump, error} = require("./mem");
 
 function display_(params) {
-    console.log(eval(params, def));
+    const val = eval(params, def);
+    if (typeof val == "object") {
+        console.log(val.join(" "));
+    } else {
+        console.log(val);
+    }
 }
 
 function set_(statement) {
@@ -45,9 +50,27 @@ function set_(statement) {
 
 function input_(params) {
     const prompt = require("prompt-sync")();
-    const input = prompt(eval(params, def));
+    let input;
+    val = eval(params, def);
+    if (countParams(params) > 1) {
+        input = prompt(val.join(" "));
+    }
+    else {
+        input = prompt(val);
+    }
     return [input, "StringLiteral"];
 }
+
+function sum_(params) {
+    let sum = 0;
+    params.forEach(element => {
+        if (element.type == "NumberLiteral" || element.type == "FloatLiteral"){
+            sum += parseFloat(element.value);
+        }
+    });
+    return [sum, "NumberLiteral"];
+}
+
 
 function now(){
     return [Date.now(), "NumberLiteral"];
@@ -65,6 +88,17 @@ function num_(params) {
     }
 }
 
+function countParams(params){
+    var count = 1;
+    params.forEach(element => {
+        if (element.type == "Delimiter" && element.value == ","){
+            count++;
+        }
+    });
+    return count;
+
+}
+
 const def = {
     display: function (statement){
         display_(statement);
@@ -74,6 +108,9 @@ const def = {
     },
     input: function (params){
         return input_(params);
+    },
+    sum: function (params){
+        return sum_(params);
     },
     now: function (){
         return now();
