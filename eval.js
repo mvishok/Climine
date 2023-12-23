@@ -2,6 +2,10 @@ const { exit } = require('process');
 const { getVariable } = require('./mem');
 
 function eval(node, def) {
+    if (node[0].type == 'CallExpression') {
+
+        return eval(node[0].params, def);;
+    }
     if (node.length == 0) {
         return "";
     }
@@ -60,7 +64,6 @@ function eval(node, def) {
     } else {
         result = parseFloat(node[0].value);
     }
-
     for (let i = 1; i < node.length; i += 2) {
         const operator = node[i].value;
         let operand;
@@ -127,6 +130,15 @@ function eval(node, def) {
                 break;
             case '==':
                 result = result == operand ? 1 : 0;
+                break;
+            case '!=':
+                result = result != operand ? 1 : 0;
+                break;
+            case '<':
+                result = result < operand ? 1 : 0;
+                break;
+            case '>':
+                result = result > operand ? 1 : 0;
                 break;
             case undefined:
                 break;
