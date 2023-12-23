@@ -2,11 +2,36 @@ const { getVariable, error, config } = require('./mem');
 const { appendFileSync } = require('fs');
 
 function eval(node, def) {
+    if (node.length == 0) {
+        return "";
+    }
     if (node[0].type == 'CallExpression') {
         return eval(node[0].params, def);;
     }
-    if (node.length == 0) {
-        return "";
+    //if has multiple params, call eval recursively and return the result as []
+    //find no. of params by counting no. of commas
+    if (node.length > 1) {
+        var params = [];
+        var param = [];
+        var count = 0;
+        for (let i = 0; i < node.length; i++) {
+            if (node[i].type === 'Delimiter' && node[i].value === ',') {
+                params.push(param);
+                param = [];
+                count++;
+            } else {
+                param.push(node[i]);
+            }
+        }
+        params.push(param);
+        count++;
+        if (count > 1) {
+            var result = [];
+            for (let i = 0; i < count; i++) {
+                result.push(eval(params[i], def));
+            }
+            return result;
+        }
     }
     var variableValue;
     if (node.length === 1 && node[0].type === 'Identifier') {
