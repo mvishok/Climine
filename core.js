@@ -51,6 +51,10 @@ function input_(params) {
     return [input, "StringLiteral"];
 }
 
+function now(){
+    return [Date.now(), "NumberLiteral"];
+}
+
 //to conevrt a string to a number
 function num_(params) {
     const val = eval(params, def);
@@ -72,6 +76,9 @@ const def = {
     },
     input: function (params){
         return input_(params);
+    },
+    now: function (){
+        return now();
     },
     num: function (params){
         return num_(params);
