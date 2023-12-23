@@ -130,3 +130,4 @@ dist
 .pnp.*
 
 test.cli
+log.txt
