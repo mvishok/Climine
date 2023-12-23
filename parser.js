@@ -53,6 +53,15 @@ function parser(tokens){
             };
         }
 
+        if(token.type === 'delimiter' && token.value === ','){
+            current++;
+
+            return {
+                type: 'Delimiter',
+                value: token.value,
+            };
+        }
+
         if(token.type === 'float'){
             current++;
 
