@@ -1,5 +1,4 @@
-const { exit } = require('process');
-const { getVariable } = require('./mem');
+const { getVariable, error } = require('./mem');
 
 function eval(node, def) {
     if (node[0].type == 'CallExpression') {
@@ -14,12 +13,8 @@ function eval(node, def) {
         if (getVariable(node[0].value)[0]) {
             variableValue = getVariable(node[0].value)[0];
         }
-        else if (def[node[0].value]) {
-
-            exit(0);
-        }
         else {
-            console.log(`Variable ${node[0].value} is not defined (eval)`);
+            error(`Variable ${node[0].value} is not defined (eval)`);
             return undefined;
         }
 
@@ -45,13 +40,12 @@ function eval(node, def) {
                 }
                 result = variableValue[0];
             } else {
-                console.log(`${node[0].value} is not defined (eval)`);
-                exit(1);
+                error(`${node[0].value} is not defined (eval)`);
             }
         } else {
             const variableValue = getVariable(node[0].value);
             if (variableValue === undefined || variableValue === null || variableValue === '' || variableValue === NaN) {
-                console.log(`Variable ${node[0].value} is not defined (eval)`);
+                error(`Variable ${node[0].value} is not defined (eval)`);
                 return undefined;
             }
 
@@ -82,13 +76,12 @@ function eval(node, def) {
                     }
                     operand = variableValue[0];
                 } else {
-                    console.log(`${node[i+1].value} is not defined (eval)`);
-                    exit(1);
+                    error(`${node[i+1].value} is not defined (eval)`);
                 }
             } else {
                 variableValue = getVariable(node[i + 1].value);
                 if (variableValue === undefined) {
-                    console.log(`Variable ${node[i + 1].value} is not defined (eval)`);
+                    error(`Variable ${node[i + 1].value} is not defined (eval)`);
                     return undefined;
                 }
 
@@ -143,7 +136,7 @@ function eval(node, def) {
             case undefined:
                 break;
             default:
-                console.log(`Operator ${operator} is not supported`);
+                error(`Operator ${operator} is not supported`);
                 return undefined;
         }
     }

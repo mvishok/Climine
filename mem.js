@@ -1,4 +1,5 @@
 var variables = {}
+var config = {}
 
 function setVariable(name, value, type) {
     variables[name] = {
@@ -19,8 +20,19 @@ function dump(){
     console.log(variables);
 }
 
+function error(message) {
+    if (config["mode"] == "script") {
+        console.error(`Error: ${message}`);
+        process.exit(1);
+    } else {
+        console.error(`Error: ${message}`);
+    }
+}
+
 module.exports = {
     setVariable,
     getVariable,
-    dump
+    dump,
+    error,
+    config
 }

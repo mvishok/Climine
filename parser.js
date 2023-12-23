@@ -1,10 +1,9 @@
-
+const { error } = require('./mem');
 function parser(tokens){
     let current = 0;
     
     if (tokens.Length < 1){
-        console.log("No tokens to parse");
-        exit(1);
+        error("No tokens to parse");
     }
 
     function walk(){
@@ -111,7 +110,7 @@ function parser(tokens){
             };
         }
 
-        console.log("error", token.type);
+        error("error", token.type);
         current++;
     }
 

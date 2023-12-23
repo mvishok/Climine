@@ -1,6 +1,5 @@
 const eval = require("./eval");
-const {setVariable, getVariable, dump} = require("./mem");
-const {exit} = require("process");
+const {setVariable, getVariable, dump, error} = require("./mem");
 
 function display_(params) {
     console.log(eval(params, def));
@@ -25,15 +24,14 @@ function set_(statement) {
                 const val = def[statement[3].value](statement[4].params);
                 setVariable(varName, val[0], val[1]);
             } else {
-                console.log(`${statement[3].value} is not defined (core)`);
-                exit(1);
+                error(`${statement[3].value} is not defined (core)`);
             }
         } else {
             const val = getVariable(statement[3].value);
             if (val) {
                 setVariable(varName, val[0][0], val[0][1]);
             } else {
-                console.log(
+                error(
                     `Variable ${statement[3].value} is not defined`
                 );
                 return undefined;
@@ -62,7 +60,7 @@ function num_(params) {
     if (!isNaN(parseFloat(val))) {
         return [parseFloat(val), "NumberLiteral"];
     } else {
-        console.log(`${val} is not a number (core)`);
+        error(`${val} is not a number (core)`);
         return [0, "NumberLiteral"];
     }
 }

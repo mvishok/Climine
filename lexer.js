@@ -1,4 +1,4 @@
-const { exit } = require('process');
+const {error} = require('./mem');
 function lexer(input){
     const keywords = ['if', 'else', 'let', ,'until', 'while', 'for'];
     const operators = ['+', '-', '*', '/', '%', '**', '=', '>', '<', '==', '!=', '<=', '>=', '&&', '||', '!', '&'];
@@ -8,7 +8,7 @@ function lexer(input){
     let current = 0;
 
     if (!input) {
-        exit(0);
+        process.exit(0);
     }
     
     while(current < input.length){
@@ -102,8 +102,7 @@ function lexer(input){
             continue;
         }
 
-        console.log('Unexpected character: ' + char);
-        exit(1);
+        error('Unexpected character: ' + char);
     }
 
     return tokens;

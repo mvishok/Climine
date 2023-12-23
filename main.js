@@ -4,8 +4,7 @@ const { def} = require("./core");
 const eval = require("./eval");
 const fs = require("fs");
 
-const { exit } = require("process");
-const { getVariable } = require("./mem");
+const { error, config } = require("./mem");
 
 
 //if filename is given in args, read the file and store it in fileContent
@@ -15,18 +14,20 @@ if (process.argv.length > 2) {
     try {
         fileContent = fs.readFileSync(filePath, "utf8").replace(/[\r\n]+/g, "");
     } catch (error) {
-        console.error(`Error reading the file: ${error.message}`);
-        exit(1);
+        error(`Error reading the file: ${error.message}`);
+        process.exit(1);
     }
+    config["mode"] = "script";
     start(fileContent);
 } else {
+    config["mode"] = "interactive";
     const prompt = require("prompt-sync")();
     console.log("Welcome to Climine v0.1.0.\nType 'exit' to exit.");
 
     while(true){
         const input = prompt("> ");
         if(input === 'exit'){
-            exit(0);
+            process.exit(0);
         }
         start(input);
     }
@@ -60,13 +61,11 @@ function main(ast) {
                     if (def[token.value]){
                         def[token.value](statement["statement"][index+1].params);
                     } else {
-                        console.log(`${token.value} is not defined (ast)`);
-                        exit(1);
+                        error(`${token.value} is not defined (ast)`);
                     }
                 }
                 else {
-                    console.log(`${token.value} is not defined (ast)`);
-                    exit(1);
+                    error(`${token.value} is not defined (ast)`);
                 }
                 
             }
