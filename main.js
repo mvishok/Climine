@@ -101,14 +101,15 @@ function main(ast) {
                     if (argv['log']){
                         appendFileSync(config["log"], '--IF-- [\n');
                     }
-                    var condition = statement["statement"][1].params;
-                    var body = statement["statement"][2].statements;
+                    let condition = statement["statement"][1].params;
+                    let body = statement["statement"][2].statements;
+                    let elseBody;
 
                     if (statement["statement"][3].type == "Keyword" && statement["statement"][3].value == "else"){
                         if (argv['log']){
                             appendFileSync(config["log"], '--ELSE-- [\n');
                         }
-                        var elseBody = statement["statement"][4].statements;
+                        elseBody = statement["statement"][4].statements;
                     }
 
                     if (eval(condition, def) == 1){ 
@@ -133,14 +134,15 @@ function main(ast) {
                     if (argv['log']){
                         appendFileSync(config["log"], '--UNTIL-- [\n');
                     }
-                    var condition = statement["statement"][1].params;
-                    var body = statement["statement"][2].statements;
+                    let condition = statement["statement"][1].params;
+                    let body = statement["statement"][2].statements;
+                    let elseBody;
 
                     if (statement["statement"][3].type == "Keyword" && statement["statement"][3].value == "else"){
                         if (argv['log']){
                             appendFileSync(config["log"], 'Else statement: '+JSON.stringify(statement["statement"][4].statements, null, 2)+'\n');
                         }
-                        var elseBody = statement["statement"][4].statements;
+                        elseBody = statement["statement"][4].statements;
                     }
                     while (eval(condition, def) != 1){
                         if (argv['log']){
@@ -163,14 +165,14 @@ function main(ast) {
                     if (argv['log']){
                         appendFileSync(config["log"], '--WHILE-- [\n');
                     }
-                    var condition = statement["statement"][1].params;
-                    var body = statement["statement"][2].statements;
+                    let condition = statement["statement"][1].params;
+                    let body = statement["statement"][2].statements;
 
                     if (statement["statement"][3].type == "Keyword" && statement["statement"][3].value == "else"){
                         if (argv['log']){
                             appendFileSync(config["log"], '--ELSE-- [\n');
                         }
-                        var elseBody = statement["statement"][4].statements;
+                        elseBody = statement["statement"][4].statements;
                     }
                     while (eval(condition, def) == 1){
                         if (argv['log']){
