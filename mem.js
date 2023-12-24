@@ -1,4 +1,4 @@
-const { appendFileSync, cp } = require('fs');
+const { appendFileSync } = require('fs');
 var variables = {}
 var functions = {}
 var config = {}
