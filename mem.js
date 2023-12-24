@@ -1,28 +1,31 @@
 const { appendFileSync, cp } = require('fs');
 var variables = {}
+var functions = {}
 var config = {}
 
-function setVariable(name, value, type) {
+function log(message) {
     if (config["log"]){
-        appendFileSync(config["log"], 'Setting variable: '+name+' with value: '+value+' and type: '+type+'\n');
+        appendFileSync(config["log"],message+"\n");
     }
+}
+
+function setVariable(name, value, type) {
+    log('Setting variable: '+name+' with value: '+value+' and type: '+type+'\n');
+
     variables[name] = {
         value: value,
         type: type
     };
-    if (config["log"]){
-        appendFileSync(config["log"], 'Set variable: '+name+' with value: '+value+' and type: '+type+' successfully\n');
-    }
+    log('Set variable: '+name+' with value: '+value+' and type: '+type+' successfully\n');
+
 }
 
 function getVariable(name) {
-    if (config["log"]){
-        appendFileSync(config["log"],"Getting variable: "+name+"\n");
-    }
+    log("Getting variable: "+name+"\n");
+
     if (variables[name]) {
-        if (config["log"]){
-            appendFileSync(config["log"],'Got variable: '+name+' with value: '+variables[name].value+' and type: '+variables[name].type+'\n');
-        }
+        log('Got variable: '+name+' with value: '+variables[name].value+' and type: '+variables[name].type+'\n');
+
         return [variables[name].value, variables[name].type];
     } else {
         return undefined; // or handle the case when the variable is not found
@@ -30,16 +33,13 @@ function getVariable(name) {
 }
 
 function dump(){
-    if (config["log"]){
-        appendFileSync(config["log"],"Dumping variables\n");
-    }
+    log("Dumping variables\n");
     console.log(variables);
 }
 
 function error(message) {
-    if (config["log"]){
-        appendFileSync(config["log"],`Error: ${message}\n`);
-    }
+    log(`Error: ${message}\n`);
+    
     if (config["mode"] == "script") {
         if (config['try']) {
             throw new Error(`Error: ${message}`);
@@ -57,5 +57,6 @@ module.exports = {
     getVariable,
     dump,
     error,
-    config
+    config,
+    log
 }

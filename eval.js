@@ -1,5 +1,4 @@
-const { getVariable, error, config } = require('./mem');
-const { appendFileSync } = require('fs');
+const { getVariable, error, config, log } = require('./mem');
 
 function eval(node, def) {
     if (node.length == 0) {
@@ -59,13 +58,9 @@ function eval(node, def) {
 
         if (node[1]&&node[1].type === 'CallExpression') {
             if (def[node[0].value]) {
-                if (config['log']){
-                    appendFileSync(config["log"], 'Calling function: '+node[0].value+' with params: '+JSON.stringify(node[1].params)+'\n');
-                }
+                log('Calling function: '+node[0].value+' with params: '+JSON.stringify(node[1].params)+'\n');
                 variableValue = def[node[0].value](node[1].params);
-                if (config['log']){
-                    appendFileSync(config["log"], 'Function returned: '+JSON.stringify(variableValue)+'\n');
-                }
+                log('Function returned: '+JSON.stringify(variableValue)+'\n');
                 if (variableValue === undefined) {
                     variableValue = [0, 'NumberLiteral'];
                 }
@@ -101,13 +96,11 @@ function eval(node, def) {
         if (node[i + 1].type === 'Identifier') {
             if (node[i+2] && node[i + 2].type === 'CallExpression') {
                 if (def[node[i+1].value]) {
-                    if (config['log']){
-                        appendFileSync(config["log"], 'Calling function: '+node[i+1].value+' with params: '+JSON.stringify(node[i+2].params)+'\n');
-                    }
+                    log('Calling function: '+node[i+1].value+' with params: '+JSON.stringify(node[i+2].params)+'\n');
+
                     variableValue = def[node[i+1].value](node[i+2].params);
-                    if (config['log']){
-                        appendFileSync(config["log"], 'Function returned: '+JSON.stringify(variableValue)+'\n\n');
-                    }
+                    log('Function returned: '+JSON.stringify(variableValue)+'\n\n');
+
                     if (variableValue === undefined) {
                         variableValue = [0, 'NumberLiteral'];
                     }
