@@ -14,7 +14,7 @@ function log(message) {
 function setVariable(name, value, type) {
     log('Setting variable: '+name+' with value: '+value+' type: '+type+' scope: '+config.scope+'\n');
 
-    if (config.scope != "gobal"){
+    if (config.scope != "global"){
         scope[config.scope][name] = value;
         log('Set variable: '+name+' with value: '+value+' type: '+type+' scope: '+config.scope+' successfully\n');
         return;
