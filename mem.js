@@ -1,7 +1,9 @@
 const { appendFileSync } = require('fs');
-var variables = {}
-var functions = {}
-var config = {}
+var variables = {};
+var scope = {};
+var config = {
+    scope: 'global',
+}
 
 function log(message) {
     if (config["log"]){
@@ -10,20 +12,27 @@ function log(message) {
 }
 
 function setVariable(name, value, type) {
-    log('Setting variable: '+name+' with value: '+value+' and type: '+type+'\n');
+    log('Setting variable: '+name+' with value: '+value+' type: '+type+' scope: '+config.scope+'\n');
 
-    variables[name] = {
-        value: value,
-        type: type
-    };
-    log('Set variable: '+name+' with value: '+value+' and type: '+type+' successfully\n');
-
+    if (config.scope != "gobal"){
+        scope[config.scope][name] = value;
+        log('Set variable: '+name+' with value: '+value+' type: '+type+' scope: '+config.scope+' successfully\n');
+        return;
+    } else {
+        variables[name] = {
+            value: value,
+            type: type
+        };
+        log('Set variable: '+name+' with value: '+value+' type: '+type+' scope: '+config.scope+' successfully\n');
+    }
 }
 
 function getVariable(name) {
     log("Getting variable: "+name+"\n");
-
-    if (variables[name]) {
+    if (config.scope != "global" && scope[config.scope][name]){
+        log('Got variable: '+name+' with value: '+scope[config.scope][name]);
+        return [scope[config.scope][name]];
+    } else if (variables[name]) {
         log('Got variable: '+name+' with value: '+variables[name].value+' and type: '+variables[name].type+'\n');
 
         return [variables[name].value, variables[name].type];
@@ -34,7 +43,7 @@ function getVariable(name) {
 
 function dump(){
     log("Dumping variables\n");
-    console.log(variables);
+    console.log(variables, scope);
 }
 
 function error(message) {
@@ -58,5 +67,6 @@ module.exports = {
     dump,
     error,
     config,
+    scope,
     log
 }

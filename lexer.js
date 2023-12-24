@@ -1,6 +1,6 @@
 const {error} = require('./mem');
 function lexer(input){
-    const keywords = ['if', 'else', 'let', ,'until', 'while', 'for', 'try', 'handle'];
+    const keywords = ['if', 'else', 'let', ,'until', 'while', 'for', 'try', 'handle', 'define'];
     const operators = ['+', '-', '*', '/', '%', '**', '=', '>', '<', '==', '!=', '<=', '>=', '&&', '||', '!', '&'];
     const delimiters = ['(', ')', '{', '}', ';', ','];
 

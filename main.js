@@ -4,7 +4,7 @@ const { def} = require("./core");
 const eval = require("./eval");
 const {readFileSync, appendFileSync} = require('fs');
 var argv = require('minimist')(process.argv.slice(2));
-const { error, config, log } = require("./mem");
+const { error, config, log, setVariable, scope } = require("./mem");
 
 if (argv['v']) {
     console.log("Climine v0.1.0");
@@ -183,6 +183,37 @@ function main(ast) {
                     
                     log(']\n--END TRY--\n\n');
                     config["try"] = false;
+                    continue mainFlow;
+                }
+                //user defined functions with scope
+                if (token.value == "define"){
+                    log('--DEFINE-- [\n');
+                    let name = statement["statement"][1].value;
+                    let params = statement["statement"][2].params;
+                    let body = statement["statement"][3].statements;
+                    scope[name] = [];
+                    params.forEach((param) => {
+                        if (param.type == "Identifier"){
+                            scope[name][param.value] = null;
+                        }
+                    });
+
+                    log('Defining function: '+name+' with params: '+JSON.stringify(params)+'\n');
+
+                    def[name] = function(params){
+                        params = eval(params, def);
+                        
+                        Object.keys(scope[name]).forEach((key, index) => {
+                            scope[name][key] = params[index];
+                        });
+
+                        log('Executing body\n');
+                        config["scope"] = name;
+                        main({body: body});
+                        config["scope"] = "global";
+                    }
+                    
+                    log(']\n--END DEFINE--\n\n');
                     continue mainFlow;
                 }
 
