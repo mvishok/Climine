@@ -1,4 +1,4 @@
-const { appendFileSync } = require('fs');
+const { appendFileSync, cp } = require('fs');
 var variables = {}
 var config = {}
 
@@ -41,8 +41,12 @@ function error(message) {
         appendFileSync(config["log"],`Error: ${message}\n`);
     }
     if (config["mode"] == "script") {
-        console.error(`Error: ${message}`);
-        process.exit(1);
+        if (config['try']) {
+            throw new Error(`Error: ${message}`);
+        } else {
+            console.error(`Error: ${message}`);
+            process.exit(1);
+        }
     } else {
         console.error(`Error: ${message}`);
     }

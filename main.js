@@ -189,6 +189,55 @@ function main(ast) {
                     }
                     continue mainFlow;
                 }
+                if (token.value == "try"){
+                    config["try"] = true;
+                    if (argv['log']){
+                        appendFileSync(config["log"], '--TRY-- [\n');
+                    }
+                    let body = statement["statement"][1].statements;
+                    let handleBody;
+                    let finallyBody;
+                    
+                    if (statement['statement'].length > 2 && statement["statement"][2].type == "Keyword" && statement["statement"][2].value == "handle"){
+                        if (argv['log']){
+                            appendFileSync(config["log"], '--HANDLE-- [\n');
+                        }
+                        handleBody = statement["statement"][3].statements;
+                    }
+
+                    if (statement['statement'].length > 4 && statement["statement"][4].type == "Keyword" && statement["statement"][4].value == "finally"){
+                        if (argv['log']){
+                            appendFileSync(config["log"], '--FINALLY-- [\n');
+                        }
+                        finallyBody = statement["statement"][5].statements;
+                    }
+
+                    try {
+                        if (argv['log']){
+                            appendFileSync(config["log"], 'Executing body\n');
+                        }
+                        main({body: body});
+                    } catch (e) {
+                        if (handleBody){
+                            if (argv['log']){
+                                appendFileSync(config["log"], 'Executing handleBody\n');
+                            }
+                            main({body: handleBody});
+                        }
+                    }
+                    if (finallyBody){
+                        if (argv['log']){
+                            appendFileSync(config["log"], 'Executing finallyBody\n');
+                        }
+                        main({body: finallyBody});
+                    }
+                    
+                    if (argv['log']){
+                        appendFileSync(config["log"], ']\n--END TRY--\n\n');
+                    }
+                    config["try"] = false;
+                    continue mainFlow;
+                }
                 if (token.value == "let"){
                     if (argv['log']){
                         appendFileSync(config["log"], 'Calling setVariable with name: '+statement["statement"][1].value+' and value: '+JSON.stringify(statement["statement"][3])+'\n');
