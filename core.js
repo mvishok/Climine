@@ -118,6 +118,9 @@ const def = {
     num: function (params){
         return num_(params);
     },
+    exit: function (){
+        process.exit(0);
+    },
     dump: function (){
         dump();
     },
