@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Climine Code Example</title>
+  <link rel="stylesheet" href="prism.css" />
+  <style>
+    pre {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div id="action" style="display: none;">
+<pre class="line-numbers">
+<code class="language-js">define greet(name) {
+    display("Namaste " & name & "!");
+};
+
+let userName = input("Name: ");
+greet(userName);</code>
+</pre>
+</div>
+
+<div id="cmd" style="display: none;">
+  <pre class="line-numbers" style="padding: 10px !important;">
+<code class="language-bash">C:\Users\BhupendraJogi> cd Path\Of\Binary</code></pre>
+</div>
+
+<div id="script" style="display: none;">
+  <pre class="line-numbers" style="padding: 10px !important;">
+<code class="language-bash">climine HelloWorld.cli --log log.txt</code></pre>
+</div>
+
+<div id="interactive" style="display: none;">
+  <pre class="line-numbers" style="padding: 10px !important;">
+<code class="language-bash">C:\Users\BhupendraJogi> climine
+Welcome to Climine v0.1.0.
+Type 'exit' to exit.
+> _</code></pre>
+</div>
+
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  document.getElementById(urlParams.get('show')).style.display = 'block';
+</script>
+<script src="prism.js"></script>
+
+</body>
+</html>

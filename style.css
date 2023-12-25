@@ -1,0 +1,75 @@
+@font-face {
+  font-family: mono;
+  src: url(JetBrainsMono-VariableFont_wght.ttf);
+}
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+}
+
+h1 {
+  text-align: center;
+  font-family: mono;
+  font-size: 50px;
+  letter-spacing: 1px;
+  color: #333;
+}
+h1 span {
+  display: inline-block;
+  animation: slideLeft 1.5s forwards;
+  opacity: 0;
+  transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+@keyframes slideLeft {
+  from {
+    opacity: 0;
+    transform: translateX(200px);
+  } 
+  to {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+}
+
+
+
+
+/* Linkedin href */
+a {
+  position: fixed;
+  bottom: 20px;
+  right: 25px;
+  transition: 0.2s;
+  animation: slideLeft 1.5s forwards;
+}
+
+a:after {
+  content: "";
+  position: absolute;
+  margin: 0 auto;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 0%;
+  height: 2px;
+  background: #333;
+  transition: 0.2s;
+ }
+  
+a:hover {
+    opacity: 0.8;
+}    
+a:hover::after {
+  width: 100%; 
+}
