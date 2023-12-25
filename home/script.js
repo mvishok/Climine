@@ -1,5 +1,5 @@
 const AnimateOnScroll = function ({ offset } = { offset: 10 }) {
-  // Define a dobra superior, inferior e laterais da tela
+
   const windowTop = offset * window.innerHeight / 100;
   const windowBottom = window.innerHeight - windowTop;
   const windowLeft = 0;
@@ -7,20 +7,20 @@ const AnimateOnScroll = function ({ offset } = { offset: 10 }) {
 
   this.start = element => {
     window.requestAnimationFrame(() => {
-      // Seta os atributos customizados
+
       element.style.animationDelay = element.dataset.animationDelay;
       element.style.animationDuration = element.dataset.animationDuration;
 
-      // Inicia a animacao setando a classe para animar
+
       element.classList.add(element.dataset.animation);
 
-      // Seta o elemento como animado
+ 
       element.dataset.animated = "true";
     });
   };
 
   this.inViewport = element => {
-    // Obtem o boundingbox do elemento
+    
     const elementRect = element.getBoundingClientRect();
     const elementTop =
     elementRect.top + parseInt(element.dataset.animationOffset) ||
@@ -31,7 +31,7 @@ const AnimateOnScroll = function ({ offset } = { offset: 10 }) {
     const elementLeft = elementRect.left;
     const elementRight = elementRect.right;
 
-    // Verifica se o elemento esta na tela
+
     return (
       elementTop <= windowBottom &&
       elementBottom >= windowTop &&
@@ -40,27 +40,27 @@ const AnimateOnScroll = function ({ offset } = { offset: 10 }) {
 
   };
 
-  // Percorre o array de elementos, verifica se o elemento está na tela e inicia animação
+
   this.verifyElementsInViewport = (els = elements) => {
     for (let i = 0, len = els.length; i < len; i++) {
-      // Passa para o proximo laço se o elemento ja estiver animado
+
       if (els[i].dataset.animated) continue;
 
       this.inViewport(els[i]) && this.start(els[i]);
     }
   };
 
-  // Obtem todos os elementos a serem animados
+
   this.getElements = () =>
   document.querySelectorAll("[data-animation]:not([data-animated])");
 
-  // Atualiza a lista de elementos a serem animados
+
   this.update = () => {
     elements = this.getElements();
     elements && this.verifyElementsInViewport(elements);
   };
 
-  // Inicia os eventos
+
   window.addEventListener("load", this.update, false);
   window.addEventListener(
   "scroll",
