@@ -3,7 +3,7 @@
 
 # Climine
 
-Climine, is a lightweight scripting language, prioritizes simplicity and customization. With a clear syntax for functions and input handling, it serves as an accessible tool for quick tasks and facilitates the understanding of fundamental scripting concepts.
+Climine, a lightweight scripting language, prioritizes simplicity and customization. With a clear syntax for functions and input handling, it serves as an accessible tool for quick tasks and facilitates the understanding of fundamental scripting concepts.
 
 
 ## Example
