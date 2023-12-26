@@ -100,7 +100,7 @@ Replace script.cli with the name of your Climine script.
 
 ## Support
 
-For support, please use the [issues](issues) channel of this repository.
+For support, please use the [issues](https://github.com/mvishok/climine/issues) channel of this repository.
 
 
 ## License
