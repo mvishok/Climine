@@ -202,7 +202,9 @@ function main(ast) {
 
                     def[name] = function(params){
                         params = eval(params, def);
-                        
+                        //if params is not array, make it array
+                        if (!Array.isArray(params)) params = [params];
+
                         Object.keys(scope[name]).forEach((key, index) => {
                             scope[name][key] = params[index];
                         });

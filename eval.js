@@ -36,6 +36,7 @@ function eval(node, def) {
     if (node.length === 1 && node[0].type === 'Identifier') {
         if (getVariable(node[0].value)[0]) {
             variableValue = getVariable(node[0].value)[0];
+            operand = variableValue;
         }
         else {
             error(`Variable ${node[0].value} is not defined (eval)`);
@@ -109,14 +110,14 @@ function eval(node, def) {
                     error(`${node[i+1].value} is not defined (eval)`);
                 }
             } else {
-                variableValue = getVariable(node[i + 1].value);
+                variableValue = getVariable(node[i + 1].value)[0];
                 if (variableValue === undefined) {
                     error(`Variable ${node[i + 1].value} is not defined (eval)`);
                     return undefined;
                 }
 
-                if (variableValue[1] === 'StringLiteral') {
-                    operand = variableValue[0];
+                if (typeof variableValue == "string" || variableValue[1] === 'StringLiteral') {
+                    operand = variableValue;
                 } else {
                     operand = parseFloat(variableValue[0]);
                 }
