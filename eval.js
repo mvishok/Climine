@@ -110,13 +110,13 @@ function eval(node, def) {
                     error(`${node[i+1].value} is not defined (eval)`);
                 }
             } else {
-                variableValue = getVariable(node[i + 1].value)[0];
+                variableValue = getVariable(node[i + 1].value);
                 if (variableValue === undefined) {
                     error(`Variable ${node[i + 1].value} is not defined (eval)`);
                     return undefined;
                 }
 
-                if (typeof variableValue == "string" || variableValue[1] === 'StringLiteral') {
+                if (typeof variableValue[0] == "string" || variableValue[1] === 'StringLiteral') {
                     operand = variableValue;
                 } else {
                     operand = parseFloat(variableValue[0]);
