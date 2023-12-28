@@ -4,7 +4,7 @@ const { def} = require("./core");
 const eval = require("./eval");
 const {readFileSync, appendFileSync} = require('fs');
 var argv = require('minimist')(process.argv.slice(2));
-const { error, config, log, setVariable, scope } = require("./mem");
+const { error, config, log, getVariable, scope } = require("./mem");
 
 if (argv['v']) {
     console.log("Climine v0.1.0");
@@ -83,6 +83,54 @@ function main(ast) {
                 continue mainFlow;
             }
             if (token.type == "Keyword"){
+                //if it is return statement, return
+                if (token.value == "return"){
+                    log('--RETURN-- [\n');
+                    
+                    if (!statement["statement"][1]){
+                        log('Returning: undefined\n');
+                        log(']\n--END RETURN--\n\n');
+                        return undefined;
+                    }
+                    if (statement["statement"][1].type == "Identifier" && statement["statement"][2].type == "CallExpression"){
+                        let val = def[statement["statement"][1].value](statement["statement"][2].params);
+                        log('Returning: '+val+'\n');
+                        log(']\n--END RETURN--\n\n');
+                        return val;
+                    }
+                    if (statement["statement"][1].type == "Identifier"){
+                        let val = getVariable(statement["statement"][1].value);
+                        log('Returning: '+val+'\n');
+                        log(']\n--END RETURN--\n\n');
+                        return val;
+                    }
+                    if (statement["statement"][1].type == "CallExpression"){
+                        let val = eval(statement["statement"][1].params, def);
+                        log('Returning: '+val+'\n');
+                        log(']\n--END RETURN--\n\n');
+                        return val;
+                    }
+                    if (statement["statement"][1].type == "StringLiteral"){
+                        let val = statement["statement"][1].value;
+                        log('Returning: '+val+'\n');
+                        log(']\n--END RETURN--\n\n');
+                        return val;
+                    }
+                    if (statement["statement"][1].type == "NumberLiteral"){
+                        let val = statement["statement"][1].value;
+                        log('Returning: '+val+'\n');
+                        log(']\n--END RETURN--\n\n');
+                        return val;
+                    }
+                    if (statement["statement"][1].type == "FloatLiteral"){
+                        let val = statement["statement"][1].value;
+                        log('Returning: '+val+'\n');
+                        log(']\n--END RETURN--\n\n');
+                        return val;
+                    }
+                    return undefined;
+                }
+
                 if (token.value=="if"){
                     log('--IF-- [\n');
 
@@ -211,8 +259,10 @@ function main(ast) {
 
                         log('Executing body\n');
                         config["scope"] = name;
-                        main({body: body});
+                        const r = main({body: body});
                         config["scope"] = "global";
+                        log('Function returned: '+r+'\n');
+                        return r;
                     }
                     
                     log(']\n--END DEFINE--\n\n');
