@@ -65,7 +65,11 @@ function eval(node, def) {
                 if (variableValue === undefined) {
                     variableValue = [0, 'NumberLiteral'];
                 }
-                result = variableValue[0];
+                if (variableValue[0] === undefined) {
+                    result = variableValue;
+                } else {
+                    result = variableValue[0];
+                }
             } else {
                 error(`${node[0].value} is not defined (eval)`);
             }
