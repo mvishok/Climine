@@ -2,18 +2,19 @@ const lexer = require("./lexer");
 const parser = require("./parser");
 const { def} = require("./core");
 const eval = require("./eval");
-const {readFileSync, appendFileSync} = require('fs');
+const {readFileSync} = require('fs');
 var argv = require('minimist')(process.argv.slice(2));
 const { error, config, log, getVariable, scope } = require("./mem");
 
+const VERSION = '0.1.1';
 if (argv['v']) {
-    console.log("Climine v0.1.0");
+    console.log("Climine v" + VERSION);
     process.exit(0);
 }
 
 if (argv['log']){
     config["log"] = argv["log"];
-    log('\n----------------\nClimine v0.1.0\n\n---- START ----\n');
+    log('\n----------------\nClimine v'+VERSION+'\n\n---- START ----\n');
 }
 
 if (argv['_'].length > 0) {
@@ -31,7 +32,7 @@ if (argv['_'].length > 0) {
     log('Interactive mode\n\n');
     config["mode"] = "interactive";
     const prompt = require("prompt-sync")();
-    console.log("Welcome to Climine v0.1.0.\nType 'exit' to exit.");
+    console.log("Welcome to Climine v"+VERSION+".\nType 'exit' to exit.");
 
     while(true){
         const input = prompt("> ");
