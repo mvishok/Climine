@@ -1,5 +1,6 @@
 const eval = require("./eval");
 const {setVariable, getVariable, dump, error} = require("./mem");
+const {exec} = require('child_process');
 
 function display_(params) {
     const val = eval(params, def);
@@ -88,6 +89,23 @@ function num_(params) {
     }
 }
 
+//to run os shell commands
+function cmd_(params) {
+    const command = eval(params, def);
+
+    exec(command, (error, stdout, stderr) => {
+        if (error) {
+            console.error(`${error.message}`);
+            return;
+        }
+        if (stderr) {
+            console.error(`${stderr}`);
+            return;
+        }
+        console.log(`${stdout}`);
+    });
+}
+
 function countParams(params){
     var count = 1;
     params.forEach(element => {
@@ -118,11 +136,14 @@ const def = {
     num: function (params){
         return num_(params);
     },
+    cmd: function (params){
+        return cmd_(params);
+    },
     exit: function (){
         process.exit(0);
     },
     dump: function (){
-        dump();
+        dump(def);
     },
 };
 
