@@ -65,7 +65,9 @@ function main(ast) {
         }
     });
     
-    mainFlow: for (let statement of finalAST) {
+    let i=0;
+    mainFlow: while (i<finalAST.length){
+        const statement = finalAST[i];
         for (const [index, token] of statement["statement"].entries()){
             if (token.type == "Identifier") {
                 if (statement["statement"][index+1].type == "CallExpression"){
@@ -80,7 +82,7 @@ function main(ast) {
                 else {
                     error(`${token.value} is not defined (ast)`);
                 }
-                continue mainFlow;
+                i++;continue mainFlow;
             }
             if (token.type == "Keyword"){
                 //if it is return statement, return
@@ -131,6 +133,43 @@ function main(ast) {
                     return undefined;
                 }
 
+                if (token.value == "include"){
+                    log('--INCLUDE-- [\n');
+                    
+                    if (statement["statement"][1].type != "StringLiteral"){
+                        error(`Include statement must have string literal as a parameter`);
+                    }
+                    let filePath = statement["statement"][1].value;
+                    let fileContent;
+                    try {
+                        fileContent = readFileSync(filePath, "utf8").replace(/[\r\n]+/g, "");
+                    } catch (error) {
+                        error(`Error reading the file: ${error.message}`);
+                    }
+
+                    log('Reading script: '+filePath+'\n\n');
+                    
+                    includeAST = parser(lexer(fileContent));
+
+                    let includeFinalAST = [];
+
+                    let current =[];
+
+                    includeAST["body"].forEach((token) => {
+                        current.push(token);
+                        if (token.type == "Delimiter" && token.value == ";") {
+                            includeFinalAST.push({ statement: current });
+                            current = [];
+                        }
+                    });
+
+                    //append it to main finalAST
+                    finalAST.splice(i + 1, 0, ...includeFinalAST);
+                    
+                    log(']\n--END INCLUDE--\n\n');
+                    i++;continue mainFlow;
+                }
+
                 if (token.value=="if"){
                     log('--IF-- [\n');
 
@@ -154,7 +193,7 @@ function main(ast) {
                         }
                     }
                     log(']\n\n--END IF--\n\n');
-                    continue mainFlow;
+                    i++;continue mainFlow;
                 } 
                 if (token.value == "until"){
                     log('--UNTIL-- [\n');
@@ -175,7 +214,7 @@ function main(ast) {
                         main({body: elseBody});
                     }
                     log(']\n--END UNTIL--\n\n');
-                    continue mainFlow;
+                    i++;continue mainFlow;
                 }
                 if (token.value == "while"){
                     log('--WHILE-- [\n');
@@ -195,7 +234,7 @@ function main(ast) {
                         main({body: elseBody});
                     }
                     log(']\n--END WHILE--\n\n');
-                    continue mainFlow;
+                    i++;continue mainFlow;
                 }
                 if (token.value == "try"){
                     config["try"] = true;
@@ -231,7 +270,7 @@ function main(ast) {
                     
                     log(']\n--END TRY--\n\n');
                     config["try"] = false;
-                    continue mainFlow;
+                    i++;continue mainFlow;
                 }
                 //user defined functions with scope
                 if (token.value == "define"){
@@ -266,14 +305,14 @@ function main(ast) {
                     }
                     
                     log(']\n--END DEFINE--\n\n');
-                    continue mainFlow;
+                    i++;continue mainFlow;
                 }
 
                 if (token.value == "let"){
                     log('Calling setVariable with name: '+statement["statement"][1].value+' and value: '+JSON.stringify(statement["statement"][3])+'\n');
 
                     def['set'](statement["statement"]);
-                    continue mainFlow;
+                    i++;continue mainFlow;
                 }
             } 
             
