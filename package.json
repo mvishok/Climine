@@ -11,6 +11,17 @@
   "license": "ISC",
   "dependencies": {
     "minimist": "^1.2.8",
-    "prompt-sync": "^4.2.0"
+    "prompt-sync": "^4.2.0",
+    "rcedit": "^4.0.1"
+  },
+  "bin": "main.js",
+  "pkg": {
+    "outputPath": "dist",
+    "scripts": [
+      "main.js"
+    ],
+    "targets": [
+      "node18-win-x64"
+    ]
   }
 }

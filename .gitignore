@@ -132,3 +132,5 @@ dist
 test.cli
 log.txt
 package-lock.json
+cacheFolder
+script.js
