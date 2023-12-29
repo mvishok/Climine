@@ -85,3 +85,13 @@ setTimeout(() => {
   const arrows = document.getElementById('arrows');
   arrows.style.display = 'block';
 }, 2200);
+
+var btnDownload = document.getElementById("btn-download");
+
+btnDownload.addEventListener("click", function() {
+  if (btnDownload.classList.contains("downloaded")) {
+    btnDownload.classList.remove("downloaded");
+  } else {
+    btnDownload.classList.add("downloaded");
+  }
+});
