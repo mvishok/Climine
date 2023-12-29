@@ -1,4 +1,5 @@
 const { appendFileSync } = require('fs');
+
 var variables = {};
 var scope = {};
 var config = {
@@ -41,9 +42,9 @@ function getVariable(name) {
     }
 }
 
-function dump(){
+function dump(def){
     log("Dumping variables\n");
-    console.log(variables, scope);
+    console.log(variables, scope, def);
 }
 
 function error(message) {
