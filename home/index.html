@@ -13,7 +13,7 @@
 <header data-animation="fadeIn">
   <h1>
     <div class="title" data-animation="slideInDown" data-animation-delay=".75s"><b>Climine</b></div>
-    <div class="subtitle" data-animation="slideInUp" data-animation-delay="1.2s">v0.1.1</div>
+    <div class="subtitle" data-animation="slideInUp" data-animation-delay="1.2s">v0.1.2</div>
     <div class="subtitle" data-animation="zoomIn" data-animation-delay="1.5s" style="padding-top: 100px !important;">
         <div id="btn-download">
           <svg width="44px" height="32px" viewBox="0 0 22 16" onclick="fetch('https://api.github.com/repos/mvishok/climine/releases/latest').then(response => response.json()).then(data => { const asset = data.assets.find(asset => asset.name.endsWith('.zip')); if (asset) { const link = document.createElement('a'); link.href = asset.browser_download_url; link.download = asset.name; link.click(); } else { console.error('No suitable asset found in the latest release.'); } }).catch(error => { console.error('Error fetching latest release:', error); });">
