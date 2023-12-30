@@ -6,8 +6,9 @@ const {readFileSync} = require('fs');
 var argv = require('minimist')(process.argv.slice(2));
 const { error, config, log, getVariable, scope } = require("./mem");
 const packages = require("./lib/packages.json");
+const climine = require("./climine.json");
 
-const VERSION = '0.1.1';
+const VERSION = climine.version;
 
 const axios = require('axios');
 async function getVersion() {
