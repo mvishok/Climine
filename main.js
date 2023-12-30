@@ -35,6 +35,7 @@ async function boot(){
     if (latestVersion != VERSION){
         console.log("New version available:", latestVersion, "\nCheck it out at https://climine.vishok.tech/\n");
     }
+<<<<<<< HEAD
     if (argv['_'].length > 0) {
         log('Reading script: ' + argv['_'][0] + '\n\n');
         const filePath = argv['_'][0];
@@ -58,6 +59,20 @@ async function boot(){
                 process.exit(0);
             }
             start(input);
+=======
+    config["mode"] = "script";
+    start(fileContent);
+} else {
+    log('Interactive mode\n\n');
+    config["mode"] = "interactive";
+    const prompt = require("prompt-sync")();
+    console.log("Welcome to Climine v"+VERSION+".\nType 'exit' to exit.");
+
+    while(true){
+        const input = prompt("> ");
+        if(input === 'exit'){
+            process.exit(0);
+>>>>>>> b0035d4173d15d6ce800d61c79d78c90f8ec7d15
         }
     }
 }
