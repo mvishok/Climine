@@ -5,6 +5,7 @@ const eval = require("./eval");
 const {readFileSync} = require('fs');
 var argv = require('minimist')(process.argv.slice(2));
 const { error, config, log, getVariable, scope } = require("./mem");
+const packages = require("./lib/packages.json");
 
 const VERSION = '0.1.1';
 
@@ -161,6 +162,9 @@ function main(ast) {
                         error(`Include statement must have string literal as a parameter`);
                     }
                     let filePath = statement["statement"][1].value;
+                    if (Object.keys(packages[""]).includes(filePath)){
+                        filePath = "lib/"+packages[""][filePath].path;
+                    }
                     let fileContent;
                     try {
                         fileContent = readFileSync(filePath, "utf8").replace(/[\r\n]+/g, "");
