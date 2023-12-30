@@ -7,6 +7,19 @@ var argv = require('minimist')(process.argv.slice(2));
 const { error, config, log, getVariable, scope } = require("./mem");
 
 const VERSION = '0.1.1';
+
+const axios = require('axios');
+async function getVersion() {
+    try {
+      const response = await axios.get('https://api.github.com/repos/mvishok/climine/releases/latest');
+      return response.data.tag_name;
+    } catch (error) {
+      console.error('Error fetching release tag:', error.message);
+      // Handle the error as needed
+      return null;
+    }
+  }
+
 if (argv['v']) {
     console.log("Climine v" + VERSION);
     process.exit(0);
@@ -17,32 +30,39 @@ if (argv['log']){
     log('\n----------------\nClimine v'+VERSION+'\n\n---- START ----\n');
 }
 
-if (argv['_'].length > 0) {
-    log('Reading script: ' + argv['_'][0] + '\n\n');
-    const filePath = argv['_'][0];
-    let fileContent;
-    try {
-        fileContent = readFileSync(filePath, "utf8").replace(/[\r\n]+/g, "");
-    } catch (error) {
-        error(`Error reading the file: ${error.message}`);
+async function boot(){
+    const latestVersion = await getVersion();
+    if (latestVersion != VERSION){
+        console.log("New version available:", latestVersion, "\nCheck it out at https://climine.vishok.tech/\n");
     }
-    config["mode"] = "script";
-    start(fileContent);
-} else {
-    log('Interactive mode\n\n');
-    config["mode"] = "interactive";
-    const prompt = require("prompt-sync")();
-    console.log("Welcome to Climine v"+VERSION+".\nType 'exit' to exit.");
-
-    while(true){
-        const input = prompt("> ");
-        if(input === 'exit'){
-            process.exit(0);
+    if (argv['_'].length > 0) {
+        log('Reading script: ' + argv['_'][0] + '\n\n');
+        const filePath = argv['_'][0];
+        let fileContent;
+        try {
+            fileContent = readFileSync(filePath, "utf8").replace(/[\r\n]+/g, "");
+        } catch (error) {
+            error(`Error reading the file: ${error.message}`);
         }
-        start(input);
+        config["mode"] = "script";
+        start(fileContent);
+    } else {
+        log('Interactive mode\n\n');
+        config["mode"] = "interactive";
+        const prompt = require("prompt-sync")();
+        console.log("Welcome to Climine v"+VERSION+".\nType 'exit' to exit.");
+
+        while(true){
+            const input = prompt("> ");
+            if(input === 'exit'){
+                process.exit(0);
+            }
+            start(input);
+        }
     }
-    
 }
+
+boot();
 
 function start(input) {
     const tokens = lexer(input);
