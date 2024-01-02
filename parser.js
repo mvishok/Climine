@@ -90,6 +90,25 @@ function parser(tokens){
             return node;
         }
 
+        //if it is an array "[]", similarly store elements to "value"
+        if(token.type === 'delimiter' && token.value === '['){
+            let node = {
+                type: 'ArrayExpression',
+                value: [],
+            };
+
+            token = tokens[++current];
+
+            while((token.type !== 'delimiter') || (token.type === 'delimiter' && token.value !== ']')){
+                node.value.push(walk());
+                token = tokens[current];
+            }
+
+            current++;
+
+            return node;
+        }
+
         //if it is a functional block "{}" , similarly store statements to "statements"
         if(token.type === 'delimiter' && token.value === '{'){
             let node = {

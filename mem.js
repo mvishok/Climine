@@ -16,10 +16,20 @@ function setVariable(name, value, type) {
     log('Setting variable: '+name+' with value: '+value+' type: '+type+' scope: '+config.scope+'\n');
 
     if (config.scope != "global"){
+        if (type == "ArrayExpression"){
+            if (typeof value != "object"){
+                value = [value];
+            }
+        }
         scope[config.scope][name] = value;
         log('Set variable: '+name+' with value: '+value+' type: '+type+' scope: '+config.scope+' successfully\n');
         return;
     } else {
+        if (type == "ArrayExpression"){
+            if (typeof value != "object"){
+                value = [value];
+            }
+        }
         variables[name] = {
             value: value,
             type: type
@@ -28,15 +38,21 @@ function setVariable(name, value, type) {
     }
 }
 
-function getVariable(name) {
-    log("Getting variable: "+name+"\n");
+function getVariable(name, index=undefined) {
     if (config.scope != "global" && scope[config.scope][name]){
         log('Got variable: '+name+' with value: '+scope[config.scope][name]);
-        return [scope[config.scope][name]];
+        if (index != undefined){
+            return [scope[config.scope][name]["value"][index]];
+        } else {
+            return [scope[config.scope][name]];
+        }
     } else if (variables[name]) {
         log('Got variable: '+name+' with value: '+variables[name].value+' and type: '+variables[name].type+'\n');
-
-        return [variables[name].value, variables[name].type];
+        if (index != undefined){
+            return [variables[name]["value"][index]];
+        } else {
+            return [variables[name].value, variables[name].type];
+        }
     } else {
         return undefined; // or handle the case when the variable is not found
     }

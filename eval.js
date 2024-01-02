@@ -33,10 +33,17 @@ function eval(node, def) {
         }
     }
     var variableValue;
-    if (node.length === 1 && node[0].type === 'Identifier') {
-        if (getVariable(node[0].value)[0]) {
-            variableValue = getVariable(node[0].value)[0];
-            operand = variableValue;
+    if (node[0].type === 'Identifier' && node.length === 1 || node[0].type === 'Identifier' && node[1].type === 'ArrayExpression') {
+        if (getVariable(node[0].value)) {
+            //if it is an array with index, return the value at that index
+            if (node[1].type === 'ArrayExpression') {
+                index = eval(node[1].value, def);
+                variableValue = getVariable(node[0].value, index)[0];
+                operand = variableValue;
+            } else {
+                variableValue = getVariable(node[0].value)[0];
+                operand = variableValue;
+            }
         }
         else {
             error(`Variable ${node[0].value} is not defined (eval)`);

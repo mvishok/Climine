@@ -22,6 +22,10 @@ function set_(statement) {
         } else {
             setVariable(varName, val, "FloatLiteral");
         }
+    } else if (statement[3].type == "ArrayExpression") {
+        const val = eval(statement[3].value, def);
+        setVariable(varName, val, "ArrayExpression");
+
     } else if (statement[3].type == "Identifier") {
         
         //if it is a call expression
