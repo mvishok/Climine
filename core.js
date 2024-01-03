@@ -1,6 +1,7 @@
 const eval = require("./eval");
 const {setVariable, getVariable, dump, error} = require("./mem");
-const {exec} = require('child_process');
+const {execSync} = require('child_process');
+const fs = require("fs");
 
 function display_(params) {
     const val = eval(params, def);
@@ -9,6 +10,7 @@ function display_(params) {
     } else {
         console.log(val);
     }
+    return [0, "NumberLiteral"];
 }
 
 function set_(statement) {
@@ -93,21 +95,73 @@ function num_(params) {
     }
 }
 
+//to read file
+function read_(params) {
+    const val = eval(params, def);
+    try {
+        return [fs.readFileSync(val, "utf8"), "StringLiteral"];
+    } catch (err) {
+        error(`${val} is not a file (core)`);
+        return [0, "NumberLiteral"];
+    }
+}
+
+//to write to file (overwrites)
+function write_(params) {
+    const val = eval(params, def);
+    try {
+        console.log(val[0], val[1]);
+        fs.writeFileSync(val[0], val[1]);
+    } catch (err) {
+        error(`${val} is not a file (core)`);
+    }
+    return [0, "NumberLiteral"];
+}
+
+//to append to file
+function append_(params) {
+    const val = eval(params, def);
+    try {
+        fs.appendFileSync(val[0], val[1]);
+    } catch (err) {
+        error(`${val} is not a file (core)`);
+    }
+    return [0, "NumberLiteral"];
+}
+
+//to delete a file
+function delete_(params) {
+    const val = eval(params, def);
+    try {
+        fs.unlinkSync(val);
+    } catch (err) {
+        error(`${val} is not a file (core)`);
+    }
+    return [0, "NumberLiteral"];
+}
+
+//to check if a file exists
+function exists_(params) {
+    const val = eval(params, def);
+    try {
+        fs.accessSync(val);
+        return [0, "NumberLiteral"];
+    } catch (err) {
+        return [1, "NumberLiteral"];
+    }
+}
 //to run os shell commands
 function cmd_(params) {
     const command = eval(params, def);
 
-    exec(command, (error, stdout, stderr) => {
-        if (error) {
-            console.error(`${error.message}`);
-            return;
-        }
-        if (stderr) {
-            console.error(`${stderr}`);
-            return;
-        }
-        console.log(`${stdout}`);
-    });
+    try {
+        // execute command synchronously and capture the output
+        const output = execSync(command, { encoding: 'utf-8' });
+        return [output, "StringLiteral"];
+    } catch (error) {
+        return [`${error.message} (core)`, "StringLiteral"];
+    }
+
 }
 
 function countParams(params){
@@ -123,10 +177,10 @@ function countParams(params){
 
 const def = {
     display: function (statement){
-        display_(statement);
+        return display_(statement);
     },
     set: function (statement){
-        set_(statement);
+        return set_(statement);
     },
     input: function (params){
         return input_(params);
@@ -139,6 +193,21 @@ const def = {
     },
     num: function (params){
         return num_(params);
+    },
+    read: function (params){
+        return read_(params);
+    },
+    write: function (params){
+        write_(params);
+    },
+    append: function (params){
+        append_(params);
+    },
+    delete: function (params){
+        delete_(params);
+    },
+    exists: function (params){
+        return exists_(params);
     },
     cmd: function (params){
         return cmd_(params);
