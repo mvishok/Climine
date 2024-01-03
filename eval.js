@@ -36,7 +36,7 @@ function eval(node, def) {
     if (node[0].type === 'Identifier' && node.length === 1 || node[0].type === 'Identifier' && node[1].type === 'ArrayExpression') {
         if (getVariable(node[0].value)) {
             //if it is an array with index, return the value at that index
-            if (node[1].type === 'ArrayExpression') {
+            if (node[1] && node[1].type === 'ArrayExpression') {
                 index = eval(node[1].value, def);
                 variableValue = getVariable(node[0].value, index)[0];
                 operand = variableValue;
