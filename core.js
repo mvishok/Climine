@@ -164,6 +164,13 @@ function exists_(params) {
         return [1, "NumberLiteral"];
     }
 }
+
+//to split "StringLiteral" into an "ArrayExpression"
+function split_(params) {
+    const val = eval(params, def);
+    return [val[0].split(val[1]), "ArrayExpression"];
+}
+
 //to run os shell commands
 function cmd_(params) {
     const command = eval(params, def);
@@ -222,6 +229,9 @@ const def = {
     },
     exists: function (params){
         return exists_(params);
+    },
+    split: function (params){
+        return split_(params);
     },
     cmd: function (params){
         return cmd_(params);
