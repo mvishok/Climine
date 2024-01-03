@@ -12,7 +12,7 @@ function log(message) {
     }
 }
 
-function setVariable(name, value, type) {
+function setVariable(name, value, type, index=undefined) {
     log('Setting variable: '+name+' with value: '+value+' type: '+type+' scope: '+config.scope+'\n');
 
     if (config.scope != "global"){
@@ -21,7 +21,7 @@ function setVariable(name, value, type) {
                 value = [value];
             }
         }
-        scope[config.scope][name] = value;
+        index == undefined ? scope[config.scope][name] = value : scope[config.scope][name]["value"][index] = value;
         log('Set variable: '+name+' with value: '+value+' type: '+type+' scope: '+config.scope+' successfully\n');
         return;
     } else {
@@ -30,10 +30,7 @@ function setVariable(name, value, type) {
                 value = [value];
             }
         }
-        variables[name] = {
-            value: value,
-            type: type
-        };
+        index == undefined ? variables[name] = {value: value, type: type} : variables[name]["value"][index] = value;
         log('Set variable: '+name+' with value: '+value+' type: '+type+' scope: '+config.scope+' successfully\n');
     }
 }

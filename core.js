@@ -15,43 +15,57 @@ function display_(params) {
 
 function set_(statement) {
     const varName = statement[1].value;
-    if (statement[3].type == "CallExpression") {
-        const val = eval(statement[3].params, def);
-        if (typeof val == "number") {
-            setVariable(varName, val, "NumberLiteral");
-        } else if (typeof val == "string") {
-            setVariable(varName, val, "StringLiteral");
-        } else {
-            setVariable(varName, val, "FloatLiteral");
+    let i = 0;
+    if (statement[2].type == "ArrayExpression") {
+        var index = eval(statement[2].value, def);
+        if (index.length > 1) {
+            error("Array index cannot be more than 1 (core)");
+            return undefined;
         }
-    } else if (statement[3].type == "ArrayExpression") {
-        const val = eval(statement[3].value, def);
-        setVariable(varName, val, "ArrayExpression");
+        i = 1;
+    }
 
-    } else if (statement[3].type == "Identifier") {
+    if (statement[i+3].type == "CallExpression") {
+        const val = eval(statement[i+3].params, def);
+        if (typeof val == "number") {
+            setVariable(varName, val, "NumberLiteral", index);
+        } else if (typeof val == "string") {
+            setVariable(varName, val, "StringLiteral", index);
+        } else {
+            setVariable(varName, val, "FloatLiteral", index);
+        }
+    } else if (statement[i+3].type == "ArrayExpression") {
+        const val = eval(statement[i+3].value, def);
+        setVariable(varName, val, "ArrayExpression", index);
+
+    } else if (statement[i+3].type == "Identifier") {
         
         //if it is a call expression
-        if (statement[4].type == "CallExpression") {
-            if (def[statement[3].value]){
-                const val = def[statement[3].value](statement[4].params);
-                setVariable(varName, val[0], val[1]);
+        if (statement[i+4].type == "CallExpression") {
+            if (def[statement[i+3].value]){
+                const val = def[statement[i+3].value](statement[i+4].params);
+                setVariable(varName, val[0], val[1], index);
             } else {
-                error(`${statement[3].value} is not defined (core)`);
+                error(`${statement[i+3].value} is not defined (core)`);
             }
         } else {
-            const val = getVariable(statement[3].value);
+            const val = getVariable(statement[i+3].value);
             if (val) {
-                setVariable(varName, val[0][0], val[0][1]);
+                if (!Array.isArray(val[0])) {
+                    setVariable(varName, val[0], val[1], index);
+                } else {
+                    setVariable(varName, val[0][0], val[0][1], index);
+                }
             } else {
                 error(
-                    `Variable ${statement[3].value} is not defined`
+                    `Variable ${statement[i+3].value} is not defined`
                 );
                 return undefined;
             }
         }
     } else {
-        const val = statement[3].value;
-        setVariable(varName, val, statement[3].type);
+        const val = statement[i+3].value;
+        setVariable(varName, val, statement[i+3].type, index);
     }
 }
 
