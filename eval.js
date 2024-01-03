@@ -50,7 +50,9 @@ function eval(node, def) {
             return undefined;
         }
 
-        if (isNaN(parseFloat(variableValue))) {
+        if (typeof variableValue == 'object') {
+            return variableValue;
+        } else if (isNaN(parseFloat(variableValue))) {
             return variableValue;
         } else {
             return parseFloat(variableValue);
