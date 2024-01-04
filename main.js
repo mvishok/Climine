@@ -5,8 +5,9 @@ const eval = require("./eval");
 const {readFileSync} = require('fs');
 var argv = require('minimist')(process.argv.slice(2));
 const { throwError, config, log, getVariable, scope } = require("./mem");
-const packages = require("./lib/packages.json");
-const climine = require("./climine.json");
+const path = require('path');
+const packages = require(path.resolve(__dirname, 'lib', 'packages.json'));
+const climine = require(path.resolve(__dirname, 'climine.json'));
 
 const VERSION = climine.version;
 
