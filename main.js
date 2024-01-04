@@ -1,12 +1,12 @@
-const lexer = require("../lexer");
-const parser = require("../parser");
-const { def} = require("../core");
-const eval = require("../eval");
+const lexer = require("./lexer");
+const parser = require("./parser");
+const { def} = require("./core");
+const eval = require("./eval");
 const {readFileSync} = require('fs');
 var argv = require('minimist')(process.argv.slice(2));
-const { error, config, log, getVariable, scope } = require("../mem");
-const packages = require("./packages.json");
-const climine = require("./climine.json");
+const { error, config, log, getVariable, scope } = require("./mem");
+const packages = require("./lib/packages.json");
+const climine = require("./lib/climine.json");
 
 const VERSION = climine.version;
 
