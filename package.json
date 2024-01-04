@@ -15,11 +15,11 @@
     "prompt-sync": "^4.2.0",
     "rcedit": "^4.0.1"
   },
-  "bin": "dist/main.js",
+  "bin": "lib/main.js",
   "pkg": {
     "outputPath": "dist",
     "scripts": [
-      "dist/main.js"
+      "lib/main.js"
     ],
     "targets": [
       "node18-win-x64"
