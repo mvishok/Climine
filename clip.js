@@ -1,8 +1,10 @@
 const fs = require('fs');
-const packages = require('./packages.json');
+const path = require('path');
 const argv = require('minimist')(process.argv.slice(2));
 const base64 = require('js-base64').Base64;
 const VERSION = "0.1.2";
+const packages = JSON.parse(fs.readFileSync("lib/packages.json"));
+
 
 const axios = require('axios');
 async function getVersion() {
@@ -63,25 +65,26 @@ async function boot(){
         //download the repo
         try{
         let downloadUrl = "https://github.com/"+owner+"/"+repo+"/archive/master.zip";
-        let downloadPath = "./";
+        let downloadPath = "./lib";
         const download = require('download');
         name = await download(downloadUrl, downloadPath, {extract: true});
+        name[0].path = "./lib/"+name[0].path
         } catch (e){
-            console.error("ERROR: Could not download package");
+            console.error("ERROR: Could not download package:", e);
             return;
         }
         console.log("Downloaded to", name[0].path);
         
         try {
         console.log("Renaming to", json.name);
-        fs.renameSync(name[0].path, json.name);
+        fs.renameSync(name[0].path, "./lib/"+json.name);
         } catch (e){
-            console.error("ERROR: Could not rename package");
+            console.error("ERROR: Could not rename package:",e);
             return;
         }
         console.log("Setting package entry point to", json.entry);
         const entry = json.name+"/"+json.entry;
-        console.log("Appending to packages.json");
+        console.log("Appending to lib/packages.json");
         packages[""][json.name] = {
             "name": json.name,
             "version": json.version,
@@ -91,20 +94,21 @@ async function boot(){
             "path": entry,
         }
         try{
-        fs.writeFileSync("packages.json", JSON.stringify(packages, null, 2));
+        fs.writeFileSync("lib/packages.json", JSON.stringify(packages, null, 2));
         } catch (e){
-            console.error("ERROR: Could not write to packages.json");
+            console.error("ERROR: Could not write to lib/packages.json:", e);
             return;
         }
         console.log("Done!");
         console.log(json.name, "installed successfully.");
     }
-    if (argv["u"] || argv["uninstall"] || argv["remove"]){
-        let package = argv["u"] || argv["uninstall"] || argv["remove"];
+    if (argv["uninstall"] || argv["remove"]){
+        let package = argv["uninstall"] || argv["remove"];
         if (!packages[""][package]){
             console.error("ERROR: Package not found");
             return;
         }
+        package = "./lib/"+package;
         console.log("Removing", package);
         console.log("Deleting files...");
         try{
@@ -113,12 +117,12 @@ async function boot(){
             console.error("ERROR: Could not delete package");
             return;
         }
-        console.log("Removing from packages.json");
+        console.log("Removing from lib/packages.json");
         delete packages[""][package];
         try{
-        fs.writeFileSync("packages.json", JSON.stringify(packages, null, 2));
+        fs.writeFileSync("./lib/packages.json", JSON.stringify(packages, null, 2));
         } catch (e){
-            console.error("ERROR: Could not write to packages.json");
+            console.error("ERROR: Could not write to lib/lib/packages.json");
             return;
         }
         console.log("Done!");
