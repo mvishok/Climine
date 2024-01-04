@@ -136,3 +136,5 @@ cacheFolder
 script.js
 inc.cli
 climine.json
+lib/
+!lib/main.js
