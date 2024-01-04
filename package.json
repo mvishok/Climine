@@ -15,7 +15,7 @@
     "prompt-sync": "^4.2.0",
     "rcedit": "^4.0.1"
   },
-  "bin": "dist/index.js",
+  "bin": "index.js",
   "pkg": {
     "outputPath": "dist",
     "scripts": [
