@@ -60,12 +60,12 @@ function dump(def){
     console.log(variables, scope, def);
 }
 
-function error(message) {
+function throwError(message) {
     log(`Error: ${message}\n`);
     
     if (config["mode"] == "script") {
         if (config['try']) {
-            throw new Error(`Error: ${message}`);
+            throw new throwError(`Error: ${message}`);
         } else {
             console.error(`Error: ${message}`);
             process.exit(1);
@@ -79,7 +79,7 @@ module.exports = {
     setVariable,
     getVariable,
     dump,
-    error,
+    throwError,
     config,
     scope,
     log

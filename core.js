@@ -19,7 +19,7 @@ function set_(statement) {
     if (statement[2].type == "ArrayExpression") {
         var index = eval(statement[2].value, def);
         if (index.length > 1) {
-            error("Array index cannot be more than 1 (core)");
+            throwError("Array index cannot be more than 1 (core)");
             return undefined;
         }
         i = 1;
@@ -46,7 +46,7 @@ function set_(statement) {
                 const val = def[statement[i+3].value](statement[i+4].params);
                 setVariable(varName, val[0], val[1], index);
             } else {
-                error(`${statement[i+3].value} is not defined (core)`);
+                throwError(`${statement[i+3].value} is not defined (core)`);
             }
         } else {
             const val = getVariable(statement[i+3].value);
@@ -57,7 +57,7 @@ function set_(statement) {
                     setVariable(varName, val[0][0], val[0][1], index);
                 }
             } else {
-                error(
+                throwError(
                     `Variable ${statement[i+3].value} is not defined`
                 );
                 return undefined;
@@ -104,7 +104,7 @@ function num_(params) {
     if (!isNaN(parseFloat(val))) {
         return [parseFloat(val), "NumberLiteral"];
     } else {
-        error(`${val} is not a number (core)`);
+        throwError(`${val} is not a number (core)`);
         return [0, "NumberLiteral"];
     }
 }
@@ -115,7 +115,7 @@ function read_(params) {
     try {
         return [fs.readFileSync(val, "utf8"), "StringLiteral"];
     } catch (err) {
-        error(`${val} is not a file (core)`);
+        throwError(`${val} is not a file (core)`);
         return [0, "NumberLiteral"];
     }
 }
@@ -127,7 +127,7 @@ function write_(params) {
         console.log(val[0], val[1]);
         fs.writeFileSync(val[0], val[1]);
     } catch (err) {
-        error(`${val} is not a file (core)`);
+        throwError(`${val} is not a file (core)`);
     }
     return [0, "NumberLiteral"];
 }
@@ -138,7 +138,7 @@ function append_(params) {
     try {
         fs.appendFileSync(val[0], val[1]);
     } catch (err) {
-        error(`${val} is not a file (core)`);
+        throwError(`${val} is not a file (core)`);
     }
     return [0, "NumberLiteral"];
 }
@@ -149,7 +149,7 @@ function delete_(params) {
     try {
         fs.unlinkSync(val);
     } catch (err) {
-        error(`${val} is not a file (core)`);
+        throwError(`${val} is not a file (core)`);
     }
     return [0, "NumberLiteral"];
 }

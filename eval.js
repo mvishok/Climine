@@ -1,4 +1,4 @@
-const { getVariable, error, config, log } = require('./mem');
+const { getVariable, throwError, config, log } = require('./mem');
 
 function eval(node, def) {
     if (node.length == 0) {
@@ -46,7 +46,7 @@ function eval(node, def) {
             }
         }
         else {
-            error(`Variable ${node[0].value} is not defined (eval)`);
+            throwError(`Variable ${node[0].value} is not defined (eval)`);
             return undefined;
         }
 
@@ -80,12 +80,12 @@ function eval(node, def) {
                     result = variableValue[0];
                 }
             } else {
-                error(`${node[0].value} is not defined (eval)`);
+                throwError(`${node[0].value} is not defined (eval)`);
             }
         } else {
             const variableValue = getVariable(node[0].value);
             if (variableValue === undefined || variableValue === null || variableValue === '' || variableValue === NaN) {
-                error(`Variable ${node[0].value} is not defined (eval)`);
+                throwError(`Variable ${node[0].value} is not defined (eval)`);
                 return undefined;
             }
 
@@ -120,12 +120,12 @@ function eval(node, def) {
                     }
                     operand = variableValue[0];
                 } else {
-                    error(`${node[i+1].value} is not defined (eval)`);
+                    throwError(`${node[i+1].value} is not defined (eval)`);
                 }
             } else {
                 variableValue = getVariable(node[i + 1].value);
                 if (variableValue === undefined) {
-                    error(`Variable ${node[i + 1].value} is not defined (eval)`);
+                    throwError(`Variable ${node[i + 1].value} is not defined (eval)`);
                     return undefined;
                 }
 
@@ -180,7 +180,7 @@ function eval(node, def) {
             case undefined:
                 break;
             default:
-                error(`Operator ${operator} is not supported`);
+                throwError(`Operator ${operator} is not supported`);
                 return undefined;
         }
     }

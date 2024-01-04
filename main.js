@@ -4,9 +4,9 @@ const { def} = require("./core");
 const eval = require("./eval");
 const {readFileSync} = require('fs');
 var argv = require('minimist')(process.argv.slice(2));
-const { error, config, log, getVariable, scope } = require("./mem");
+const { throwError, config, log, getVariable, scope } = require("./mem");
 const packages = require("./lib/packages.json");
-const climine = require("./lib/climine.json");
+const climine = require("./climine.json");
 
 const VERSION = climine.version;
 
@@ -40,7 +40,7 @@ async function boot(){
         try {
             fileContent = readFileSync(filePath, "utf8").replace(/[\r\n]+/g, "");
         } catch (error) {
-            error(`Error reading the file: ${error.message}`);
+            throwError(`Error reading the file: ${error.message}`);
         }
         config["mode"] = "script";
         start(fileContent);
@@ -99,11 +99,11 @@ function main(ast) {
                         const r = def[token.value](statement["statement"][index+1].params);
                         log('Function returned: '+JSON.stringify(r)+'\n\n');
                     } else {
-                        error(`${token.value} is not defined (ast)`);
+                        throwError(`${token.value} is not defined (ast)`);
                     }
                 }
                 else {
-                    error(`${token.value} is not defined (ast)`);
+                    throwError(`${token.value} is not defined (ast)`);
                 }
                 i++;continue mainFlow;
             }
@@ -160,7 +160,7 @@ function main(ast) {
                     log('--INCLUDE-- [\n');
                     
                     if (statement["statement"][1].type != "StringLiteral"){
-                        error(`Include statement must have string literal as a parameter`);
+                        throwError(`Include statement must have string literal as a parameter`);
                     }
                     let filePath = statement["statement"][1].value;
                     if (Object.keys(packages[""]).includes(filePath)){
@@ -170,7 +170,7 @@ function main(ast) {
                     try {
                         fileContent = readFileSync(filePath, "utf8").replace(/[\r\n]+/g, "");
                     } catch (error) {
-                        error(`Error reading the file: ${error.message}`);
+                        throwError(`Error reading the file: ${error.message}`);
                     }
 
                     log('Reading script: '+filePath+'\n\n');

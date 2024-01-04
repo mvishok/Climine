@@ -102,7 +102,7 @@ function lexer(input){
             continue;
         }
 
-        error('Unexpected character: ' + char);
+        throwError('Unexpected character: ' + char);
     }
 
     return tokens;

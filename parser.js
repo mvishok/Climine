@@ -3,7 +3,7 @@ function parser(tokens){
     let current = 0;
     
     if (tokens.Length < 1){
-        error("No tokens to parse");
+        throwError("No tokens to parse");
     }
 
     function walk(){
@@ -138,7 +138,7 @@ function parser(tokens){
             };
         }
 
-        error("error", token.type);
+        throwError("error", token.type);
         current++;
     }
 
