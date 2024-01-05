@@ -1,0 +1,497 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Climine Documentation</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800,900" rel="stylesheet">
+        <link rel="stylesheet" id="dark" href="scribbler-global.css">
+        <link rel="stylesheet" href="scribbler-doc.css">
+        <link rel="author" href="humans.txt">
+        <link rel="icon" href="./favicon.ico">
+    </head>
+    <body>
+        <div class="doc__bg"></div>
+        <nav class="header">
+            <h1 class="logo"><span style="font-family: mono; color: #00eecf;">Climine</span><span class="logo__thin"> Docs</span></h1>
+            <ul class="menu">
+                <div class="menu__item toggle"><span></span></div>
+                <li class="menu__item"><a href="https://github.com/mvishok/Climine" class="link link--dark"><i class="fa fa-github"></i> Github</a></li>
+                <li class="menu__item"><a href="../" class="link link--dark"><i class="fa fa-home"></i> Home</a></li>
+                <li class="menu__item" style="background-color: #1A1A1D !important;">
+                    <input type="checkbox" id="theme-toggle" style="display: none;" onclick="changeCSS()"><label for="theme-toggle"></label>
+                </li>
+            </ul>
+        </nav>
+        <div class="wrapper">
+            <aside class="doc__nav">
+                <ul>
+                    <li class="js-btn selected">Get Started</li>
+                    <li class="js-btn">Configuration</li>
+                    <li class="js-btn">Syntax</li>
+                    <li class="js-btn">Control Flow</li>
+                    <li class="js-btn">Functions</li>
+                    <li class="js-btn">External Integration</li>
+                    <li class="js-btn">Community Support</li>
+                </ul>
+            </aside>
+            <article class="doc__content">
+                <section class="js-section">
+                    <h2 class="section__title">Get Started</h2>
+                    <p>Welcome to Climine, a lightweight and straightforward scripting language designed for simplicity and customization. Climine aims to provide an easy-to-use environment for scripting tasks and learning the basics of programming logic</p>
+                    <h3 class="section__title">Installation</h3>
+                    <p>To get started with Climine, simply install it on your system. Get the latest installer from the <a href="https://github.com/mvishok/Climine/releases" class="link link--dark"><u>releases page</u></a> and run it. The installer will guide you through the installation process.</p>
+                    <h3 class="section__title">Running the First Script</h3>
+                    <p>Once installed, create a Climine script using your preferred text editor and run it using the Climine interpreter. To run a script, simply type the following command in the terminal:</p>
+                    <div class="code__block code__block--notabs">
+                            <pre class="code code--block">
+                            <code>
+                            	$ climine    <i>script.cli</i>
+                            </code>
+                            </pre>
+					</div>
+                    <p>For an interactive experience, enter the interactive mode to execute commands on the go. To run Climine in interactive mode, type the following command in the terminal:</p>
+                    <div class="code__block code__block--notabs">
+                        <pre class="code code--block">
+                            <code>
+                                $ climine
+                            </code>
+						</pre>
+                    </div>
+                </section>
+
+                <section class="js-section">
+                    <h2 class="section__title">Configuration</h2>
+                    <p>
+                        As of now, Climine only supports "logging" as a configuration option. To enable logging, pass the <code>--log</code> flag with the file name to log to. For example:</p>
+                    <div class="code__block code__block--notabs">
+                        <pre class="code code--block">
+                        	<code>
+                            	$ climine --log log.txt
+                        	</code>
+                        </pre>
+                    </div>
+                    <br>
+                    <table id="config">
+                        <tr>
+                            <td>Options</td>
+                            <td>Value</td>
+                            <td>Default</td>
+                        </tr>
+                        <tr>
+                            <td>log</td>
+                            <td> Logs the output to a file passed as an argument</td>
+                            <td>false</td>
+                        </tr>
+                    </table>
+                    <hr />
+                </section>
+
+                <section class="js-section">
+                    <h2 class="section__title">Syntax</h2>
+                    <p>
+                        Climine's syntax is designed to be clear and straightforward, making it accessible for both beginners and experienced developers. Here's an overview of the fundamental elements in Climine's basic syntax:
+                    </p>
+                    <h3 class="section__title">Variables</h3>
+                    <p>
+                        Variables are used to store values. To declare a variable, use the <code>let</code> keyword followed by the variable name and the value to be stored. For example:
+                    </p>
+                    <div class="code__block code__block--notabs">
+                            <pre class="code code--block">
+                        		<code>
+                                    let variableName = "Hello, Climine!";
+                                    let number = 10;
+                                    let array = [1, 2, 3, 4, 5];
+                            	</code>
+                            </pre>
+                        </div>
+                    <p>
+                        Variables are dynamically typed, allowing you to assign different data types to the same variable.
+                    </p>
+
+                    <h3 class="section__title">Statements</h3>
+                    <p>
+                        Climine consist of statements, which are individual units of code that perform specific actions. Statements in Climine are typically terminated with a semicolon ;.
+                    </p>
+                	<div class="code__block code__block--notabs">
+                        <pre class="code code--block">
+                            <code>
+                                    display("This is a statement");
+                            </code>
+                        </pre>
+                    </div>
+
+					<h3 class="section__title">Expressions</h3>
+					<p>
+						Expressions are combinations of values, variables, and operators that result in a single value. Climine supports a range of operators for arithmetic, logical, and comparison operations.
+					</p>
+					<div class="code__block code__block--notabs">
+						<pre class="code code--block">
+							<code>
+								let sum = (10 + 5);
+								let isTrue = (15==15);
+							</code>
+						</pre>
+					</div>
+                    <p>
+                        <b>NOTE:</b> Expressions with more than one term should be enclosed in parentheses.
+                    </p>
+
+					<h3 class="section__title">Display Function</h3>
+					<p>
+						The <code>display()</code> function is used to output information to the console. It can be used to display strings, variables, and expressions.
+						For example:
+					</p>
+					<div class="code__block code__block--notabs">
+						<pre class="code code--block">
+							<code>
+								display("Hello, Climine!");
+								display(10);
+								display(10 + 5);
+							</code>
+						</pre>
+					</div>
+
+					<h3 class="section__title">Input Function</h3>
+					<p>
+						To interact with the user, Climine provides the input function for receiving input.
+                        For example, the following code prompts the user to enter their name and displays a greeting message:
+					</p>
+                    <div class="code__block code__block--notabs">
+                        <pre class="code code--block">
+                            <code>
+                                let name = input("Enter your name: ");
+                                display("Namaskaram, " & name);
+                            </code>
+                        </pre>
+                    </div>
+                    <br>
+                    <p>These are the foundational elements of Climine's basic syntax. As you explore more, you'll find that the simplicity of the syntax enhances readability and facilitates efficient script creation.</p>
+					<hr />
+                </section>
+
+                <section class="js-section">
+                    <h2 class="section__title">Control Flow</h2>
+                    <p>Climine provides intuitive constructs for controlling the flow of your scripts, allowing you to make decisions and repeat actions based on conditions.</p>
+
+                    <h3 class="section__title">Conditional Statements</h3>
+                    <p>
+                        Conditional statements are used to perform different actions based on different conditions. Climine supports <code>if</code> and <code>else</code> statements for conditional execution.
+                        For example, the following code prompts the user to enter a number and displays a message based on whether the number is positive or negative:
+                    </p>
+
+                    <div class="code__block code__block--notabs">
+                        <pre class="code code--block">
+                            <code>
+                                let number = input("Enter a number: ");
+                                if (number > 0) {
+                                    display("The number is positive");
+                                } else {
+                                    display("The number is negative");
+                                };
+                            </code>
+                        </pre>
+                    </div>
+
+                    <h3 class="section__title">Loops</h3>
+                    <p>
+                        Loops are used to repeat a block of code until a condition is met. Climine supports <code>while</code> and <code>until</code> loops for conditional execution.
+                        For example, the following code displays the numbers from 1 to 10:
+                    </p>
+                    <div class="code__block code__block--notabs">
+                        <pre class="code code--block">
+                            <code>
+                                let i = 1;
+                                while (i < 11) {
+                                    display(i);
+                                    let i = (i + 1);
+                                };
+                            </code>
+                        </pre>
+                    </div>
+                    <p>
+                        Climine also supports <code>else</code> statements for loops. The <code>else</code> statement is executed when the condition is no longer true.
+                    </p>
+                    <p>
+                        <b>NOTE:</b> The <code>until</code> loop is the opposite of the <code>while</code> loop. It executes the block of code until the condition is met.
+                        Here's an example of an <code>until</code> loop:
+                    </p>
+                    <div class="code__block code__block--notabs">
+                        <pre class="code code--block">
+                            <code>
+                                let i = 1;
+                                until (i > 10) {
+                                    display(i);
+                                    let i = (i + 1);
+                                } else {
+                                    display("The loop has ended");
+                                };
+                            </code>
+                        </pre>
+                    </div>
+
+                    <h3 class="section__title">Try-Handle-Finally</h3>
+                    <p>
+                        Climine supports the <code>try</code>, <code>handle</code>, and <code>finally</code> statements for exception handling.
+                        The <code>try</code> statement is used to test a block of code for errors. The <code>handle</code> statement is used to handle the error.
+                        The <code>finally</code> statement is used to execute code after the <code>try</code> and <code>handle</code> statements, regardless of the result.
+                        Here's an example of a <code>try</code>, <code>handle</code>, and <code>finally</code> statement:
+                    </p>
+                    <div class="code__block code__block--notabs">
+                        <pre class="code code--block">
+                            <code>
+                                try {
+                                    let number = num(input("Enter a number: "));
+                                    display("The number is " & number);
+                                } handle {
+                                    display("Given input is not a number");
+                                } finally {
+                                    display("The script has ended");
+                                };
+                            </code>
+                        </pre>
+                    </div>
+
+                    <br>
+                    <p>These are the foundational elements of Climine's control flow.</p>
+                    <hr />
+                </section>
+                
+                <section class="js-section">
+                    <h2 class="section__title">Functions</h2>
+                    <p>
+                        Functions are used to group a set of statements together to perform a specific task. Climine supports both built-in and user-defined functions.
+                    </p>
+
+                    <h3 class="section__title">Built-in Functions</h3>
+                    <p>
+                        Climine provides a set of built-in functions for performing common tasks.
+                        Here's a list of some of the built-in functions in Climine:
+                    </p>
+                    <table id="functions">
+                        <tr>
+                            <td>Function</td>
+                            <td>Description</td>
+                        </tr>
+                        <tr>
+                            <td>append</td>
+                            <td>Append content to a file.</td>
+                        </tr>
+                        <tr>
+                            <td>cmd</td>
+                            <td>Execute a shell command and return the output.</td>
+                        </tr>
+                        <tr>
+                            <td>delete</td>
+                            <td>Delete a file.</td>
+                        </tr>
+                        <tr>
+                            <td>display</td>
+                            <td>Display the given statement.</td>
+                        </tr>
+                        <tr>
+                            <td>dump</td>
+                            <td>Display function definitions and variable values.</td>
+                        </tr>
+                        <tr>
+                            <td>exists</td>
+                            <td>Check if a file exists.</td>
+                        </tr>
+                        <tr>
+                            <td>input</td>
+                            <td>Take user input with an optional prompt.</td>
+                        </tr>
+                        <tr>
+                            <td>num</td>
+                            <td>Convert a string to a numeric value.</td>
+                        </tr>
+                        <tr>
+                            <td>now</td>
+                            <td>Get the current timestamp.</td>
+                        </tr>
+                        <tr>
+                            <td>read</td>
+                            <td>Read the content of a file.</td>
+                        </tr>
+                        <tr>
+                            <td>set</td>
+                            <td>Set the value of a variable.</td>
+                        </tr>
+                        <tr>
+                            <td>split</td>
+                            <td>Split a string into an array based on a delimiter.</td>
+                        </tr>
+                        <tr>
+                            <td>sum</td>
+                            <td>Calculate the sum of numeric values.</td>
+                        </tr>
+                        <tr>
+                            <td>write</td>
+                            <td>Write content to a file, overwriting existing content.</td>
+                        </tr>
+                        <tr>
+                            <td>exit</td>
+                            <td>Terminate the Climine program.</td>
+                        </tr>
+                    </table>
+                    
+                    <h3 class="section__title">User-defined Functions</h3>
+                    <p>
+                        Climine also supports user-defined functions. To define a function, use the <code>define</code> keyword followed by the function name and the function body.
+                        For example, the following code defines a function named <code>greet</code> that takes a name as an argument and displays a greeting message:
+                    </p>
+                    <div class="code__block code__block--notabs">
+                        <pre class="code code--block">
+                            <code>
+                                define greet(name) {
+                                    display("Namo", (name & "!"));
+                                };
+                            </code>
+                        </pre>
+                    </div>
+
+                    <h3 class="section__title">Calling Functions</h3>
+                    <p>
+                        To call a function, simply type the function name followed by the arguments in parentheses.
+                        For example, the following code calls the <code>greet</code> function defined above:
+                    </p>
+                    <div class="code__block code__block--notabs">
+                        <pre class="code code--block">
+                            <code>
+                                greet("Vasudevaya");
+                            </code>
+                        </pre>
+                    </div>
+
+                    <h3 class="section__title">Returning Values</h3>
+                    <p>
+                        Functions can also return values. To return a value from a function, use the <code>return</code> keyword followed by the value to be returned.
+                        For example, the following code defines a function named <code>sum</code> that takes two numbers as arguments and returns their sum:
+                    </p>
+                    <div class="code__block code__block--notabs">
+                        <pre class="code code--block">
+                            <code>
+                                define sum(a, b) {
+                                    return (a + b);
+                                };
+                            </code>
+                        </pre>
+                    </div>
+
+                    <h3 class="section__title">Calling Functions with Return Values</h3>
+                    <p>
+                        To call a function that returns a value, simply type the function name followed by the arguments in parentheses.
+                        For example, the following code calls the <code>sum</code> function defined above and displays the result:
+                    </p>
+                    <div class="code__block code__block--notabs">
+                        <pre class="code code--block">
+                            <code>
+                                display(sum(10, 5));
+                            </code>
+                        </pre>
+                    </div>
+
+                    <h3 class="section__title">Scope and variables</h3>
+                    <p>
+                        Variables defined inside a function are local to the function. They cannot be accessed outside the function.
+                        Here's a brief example of how scope works in Climine:
+                    </p>
+                    <div class="code__block code__block--notabs">
+                        <pre class="code code--block">
+                            <code>
+                                define calculateSum(a, b) {
+                                    let result = a + b;
+                                    return result;
+                                };
+                                
+                                let num1 = 5;
+                                let num2 = 7;
+                                let sum = calculateSum(num1, num2);
+                                display("Sum:",sum);                                
+                            </code>
+                        </pre>
+                    </div>
+                    <p>
+                        The <code>calculateSum</code> function has its scope, and the <code>result</code> variable is local to the function.
+                        The <code>num1</code>, <code>num2</code>, and <code>sum</code> variables are global variables and can be accessed anywhere in the script.
+                    </p>
+
+                    <h3 class="section__title">Recursion</h3>
+                    <p>
+                        Climine supports recursion. A function can call itself to perform a task. Here's an example of a recursive function that calculates the factorial of a number:
+                    </p>
+                    <div class="code__block code__block--notabs">
+                        <pre class="code code--block">
+                            <code>
+                                define factorial(n) {
+                                    if (n == 0) {
+                                        return 1;
+                                    } else {
+                                        return (n * factorial(n - 1));
+                                    };
+                                };
+                            </code>
+                        </pre>
+                    </div>
+                    <p>
+                        The <code>factorial</code> function calls itself to calculate the factorial of a number.
+                    </p>
+                    <hr />
+                </section>
+
+                <section class="js-section">
+                    <h2 class="section__title">External Integration</h2>
+                    <p>
+                        Climine allows you to integrate external scripts and programs into your script. You can execute shell commands and run external scripts from your script.
+                    </p>
+                    
+                    <h3 class="section__title">Including External Scripts</h3>
+                    <p>
+                        Climine allows you to include external scripts in your script. To include an external script, use the <code>include</code> keyword followed by the path to the script as a StringLiteral.
+                        For example, the following code includes the <code>hello.cli</code> script:
+                    </p>
+                    <div class="code__block code__block--notabs">
+                        <pre class="code code--block">
+                            <code>
+                                include "hello.cli";
+                            </code>
+                        </pre>
+                    </div>
+
+                    <h3 class="section__title">Executing Shell Commands</h3>
+                    <p>
+                        Climine allows you to execute shell commands from your script. To execute a shell command, use the <code>cmd</code> function followed by the command to be executed.
+                        For example, the following code executes the <code>ls</code> command and displays the output:
+                    </p>
+                    <div class="code__block code__block--notabs">
+                        <pre class="code code--block">
+                            <code>
+                                display(cmd("dir"));
+                            </code>
+                        </pre>
+                    </div>
+                    <hr />
+                </section>
+                <section class="js-section">
+                    <h2 class="section__title">Community Support</h2>
+
+                    <p>
+                        While Climine is a lightweight and straightforward scripting language, community support plays a crucial role in its development and enhancement.
+                        If you have any questions or suggestions, feel free to join the <a href="https://discord.gg/" class="link link--dark"><u>Discord server</u></a> and share your thoughts.
+                    </p>
+                    <hr />
+                </section>
+
+            </article>
+        </div>
+
+        <footer class="footer">
+            © Copyright 2023 <a href="https://tympanus.net/codrops/" target="_blank" class="link" style="color: #00eecf">Vishok Manikantan</a>. Template by <a href="https://tympanus.net/codrops/" target="_blank" class="link link--light">Codrops</a>.
+        </footer>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+        <script src="scribbler.js"></script>
+    </body>
+</html>
