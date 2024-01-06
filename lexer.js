@@ -28,6 +28,36 @@ function lexer(input){
             continue;
         }
 
+        //if it is ' string
+        if(char === "'"){
+            let value = '';
+            char = input[++current];
+
+            while(char !== "'"){
+                value += char;
+                char = input[++current];
+            }
+
+            tokens.push({ type: 'string', value });
+            current++;
+            continue;
+        }
+
+        //if it is #, it is a comment
+        if(char === '#'){
+            let value = '';
+            char = input[++current];
+            
+            while(char !== '\n'){
+                value += char;
+                char = input[++current];
+            }
+
+            tokens.push({ type: 'comment', value });
+            current++;
+            continue;
+        }
+
         if(char === ' '){
             current++;
             continue;
