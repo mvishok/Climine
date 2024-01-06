@@ -182,6 +182,14 @@ function len_(params) {
     return [val.length, "NumberLiteral"];
 }
 
+//to pop an element from an "ArrayExpression" and delete it, also return the popped element
+function pop_(params) {
+    const val = eval(params, def);
+    const index = val[1];
+    const final = val[0].splice(index, 1);
+    return [final, "ArrayExpression"];
+}
+
 //to run os shell commands
 function cmd_(params) {
     const command = eval(params, def);
@@ -246,6 +254,9 @@ const def = {
     },
     len: function (params){
         return len_(params);
+    },
+    pop: function (params){
+        return pop_(params);
     },
     cmd: function (params){
         return cmd_(params);
