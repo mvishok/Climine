@@ -49,7 +49,10 @@ function set_(statement) {
                 throwError(`${statement[i+3].value} is not defined (core)`);
             }
         } else {
-            const val = getVariable(statement[i+3].value);
+            if (statement[i+4].type == "ArrayExpression") {
+                var second_index = eval(statement[i+4].value, def);
+            }
+            const val = getVariable(statement[i+3].value, second_index || index);
             if (val) {
                 if (!Array.isArray(val[0])) {
                     setVariable(varName, val[0], val[1], index);
@@ -168,7 +171,15 @@ function exists_(params) {
 //to split "StringLiteral" into an "ArrayExpression"
 function split_(params) {
     const val = eval(params, def);
-    return [val[0].split(val[1]), "ArrayExpression"];
+    const delimiter = val[1];
+    const final = val[0].split(delimiter);
+    return [final, "ArrayExpression"];
+}
+
+//to calculate the length of an "ArrayExpression"
+function len_(params) {
+    const val = eval(params, def);
+    return [val.length, "NumberLiteral"];
 }
 
 //to run os shell commands
@@ -232,6 +243,9 @@ const def = {
     },
     split: function (params){
         return split_(params);
+    },
+    len: function (params){
+        return len_(params);
     },
     cmd: function (params){
         return cmd_(params);
