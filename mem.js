@@ -26,7 +26,7 @@ function setVariable(name, value, type, index=undefined) {
         if (variables[name]){
             index == undefined ? variables[name] = value : variables[name]["value"][index] = value;    
         } else {
-            index == undefined ? scope[config.scope][name] = value : scope[config.scope][name]["value"][index] = value;
+            index == undefined ? scope[config.scope][name] = value : scope[config.scope][name][index] = value;
         }
         log('Set variable: '+name+' with value: '+value+' type: '+type+' scope: '+config.scope+' successfully\n');
         return;
