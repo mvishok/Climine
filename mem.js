@@ -21,7 +21,13 @@ function setVariable(name, value, type, index=undefined) {
                 value = [value];
             }
         }
-        index == undefined ? scope[config.scope][name] = value : scope[config.scope][name]["value"][index] = value;
+
+        //if updating a global variable
+        if (variables[name]){
+            index == undefined ? variables[name] = value : variables[name]["value"][index] = value;    
+        } else {
+            index == undefined ? scope[config.scope][name] = value : scope[config.scope][name]["value"][index] = value;
+        }
         log('Set variable: '+name+' with value: '+value+' type: '+type+' scope: '+config.scope+' successfully\n');
         return;
     } else {
@@ -35,11 +41,11 @@ function setVariable(name, value, type, index=undefined) {
     }
 }
 
-function getVariable(name, index=undefined) {
-    if (config.scope != "global" && scope[config.scope][name]){
+function getVariable(name, index) {
+    if (config.scope != "global" && typeof scope[config.scope][name] != "undefined"){
         log('Got variable: '+name+' with value: '+scope[config.scope][name]);
         if (index != undefined){
-            return [scope[config.scope][name]["value"][index]];
+            return [scope[config.scope][name][index]];
         } else {
             return [scope[config.scope][name]];
         }
