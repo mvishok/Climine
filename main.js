@@ -7,9 +7,8 @@ var argv = require('minimist')(process.argv.slice(2));
 const { throwError, config, log, getVariable, scope } = require("./mem");
 const path = require('path');
 const packages = require(path.resolve(__dirname, 'lib', 'packages.json'));
-const climine = require(path.resolve(__dirname, 'climine.json'));
 
-const VERSION = climine.version;
+const VERSION = "0.1.4";
 
 const axios = require('axios');
 async function getVersion() {
