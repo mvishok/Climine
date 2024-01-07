@@ -5,8 +5,7 @@ const eval = require("./eval");
 const {readFileSync} = require('fs');
 var argv = require('minimist')(process.argv.slice(2));
 const { throwError, config, log, getVariable, scope } = require("./mem");
-const path = require('path');
-const packages = require(path.resolve(__dirname, 'lib', 'packages.json'));
+const packages = JSON.parse(readFileSync("lib/packages.json"));
 
 const VERSION = "0.1.4";
 
