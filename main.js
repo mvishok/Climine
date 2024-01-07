@@ -99,6 +99,7 @@ function main(ast) {
                         log('Calling function: '+token.value+' with params: '+JSON.stringify(statement["statement"][index+1].params)+'\n');
                         const r = def[token.value](statement["statement"][index+1].params);
                         log('Function returned: '+JSON.stringify(r)+'\n\n');
+                        return r;
                     } else {
                         throwError(`${token.value} is not defined (ast)`);
                     }
@@ -325,9 +326,10 @@ function main(ast) {
                         });
 
                         log('Executing body\n');
+                        config["lastScope"] = config["scope"];
                         config["scope"] = name;
                         const r = main({body: body});
-                        config["scope"] = "global";
+                        config["scope"] = config["lastScope"];
                         log('Function returned: '+r+'\n');
                         return r;
                     }
