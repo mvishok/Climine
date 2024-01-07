@@ -1,4 +1,4 @@
-const { error } = require('./mem');
+const { throwError } = require('./mem');
 function parser(tokens){
     let current = 0;
     
