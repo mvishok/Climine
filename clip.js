@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const argv = require('minimist')(process.argv.slice(2));
 const base64 = require('js-base64').Base64;
-const VERSION = "0.1.2";
+const VERSION = "0.1.3";
 const packages = JSON.parse(fs.readFileSync("lib/packages.json"));
 
 
