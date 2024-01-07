@@ -1,5 +1,5 @@
 const eval = require("./eval");
-const {setVariable, getVariable, dump, error} = require("./mem");
+const {setVariable, getVariable, dump, throwError} = require("./mem");
 const {execSync} = require('child_process');
 const fs = require("fs");
 
@@ -44,7 +44,11 @@ function set_(statement) {
         if (statement[i+4].type == "CallExpression") {
             if (def[statement[i+3].value]){
                 const val = def[statement[i+3].value](statement[i+4].params);
+                if (val){
                 setVariable(varName, val[0], val[1], index);
+                } else {
+                setVariable(varName, undefined, "Undefined", index);
+                }
             } else {
                 throwError(`${statement[i+3].value} is not defined (core)`);
             }
